@@ -4,6 +4,7 @@ import { AuthContext } from '../Context/AuthContext';
 import Swal from 'sweetalert2';
 import { FaStar, FaStarHalf } from 'react-icons/fa6';
 import ImportModal from './ImportModal';
+import RatingStars from './RatingStars';
 
 
  const ProductDetails = () => {
@@ -17,7 +18,7 @@ import ImportModal from './ImportModal';
 
    const {productImage,
         productName
-, _id,
+,
         price,
         originCountry, 
         rating,
@@ -63,12 +64,7 @@ import ImportModal from './ImportModal';
     <h2 className="card-title font-bold text-4xl">{productName}</h2>
     <div className='text-amber-400 flex  items-center'>
     <span className='text-accent'>{rating}</span>
-
-    <FaStar></FaStar>
-    <FaStar></FaStar>
-    <FaStar></FaStar>
-    <FaStar></FaStar>
-    <FaStarHalf></FaStarHalf>
+   <RatingStars rating={{rating}}/>
     </div>
     <span>Price:{price}$</span>
     <span>Available:{availableQuantity}</span>
