@@ -8,8 +8,7 @@ const ProductCard = ({products}) => {
       //console.log(products);
 
     const {productImage,
-        productName
-, _id,
+        productName, _id,
         price,
         originCountry, 
         rating,
@@ -36,7 +35,7 @@ const ProductCard = ({products}) => {
     <h2 className="text-2xl font-semibold text-primary">{productName
 }</h2>
     <div className='flex justify-evenly items-center'>
-    <span>AvailAble:{availableQuantity}</span>
+    <span>Available:{availableQuantity}</span>
     <span>Price:{price}$</span>
     </div>
     <div className='flex justify-center items-center'>

@@ -16,7 +16,7 @@ const Header = () => {
     <li><NavLink to='/'>Home</NavLink></li>
     <li><NavLink to='/allProducts'>All Products</NavLink></li>
     <li><NavLink to='/profile'>My Exports</NavLink></li>
-    <li><NavLink to='/profile'>My Imports</NavLink></li>
+    <li><NavLink to='/myImports'>My Imports</NavLink></li>
     <li><NavLink to='/profile'>Add Export</NavLink></li>
     </>
     return (

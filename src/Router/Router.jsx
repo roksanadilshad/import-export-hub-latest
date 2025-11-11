@@ -7,6 +7,7 @@ import Login from '../Pages/Login';
 import AllProducts from '../Pages/AllProducts';
 import ProductDetails from '../Pages/ProductDetails';
 import PrivateRoute from '../PrivateRoute/PrivateRoute';
+import MyImports from '../Pages/MyImports';
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +18,7 @@ export const router = createBrowserRouter([
         {
             index: true,
             loader:()=> fetch('http://localhost:3000/latest-products'),
+            //errorElement: <p>Page Not Found</p>,
             element:<Home></Home>,
         },
         {
@@ -36,6 +38,15 @@ export const router = createBrowserRouter([
         {
           path:'/productDetails/:id' ,
          element:<PrivateRoute><ProductDetails></ProductDetails></PrivateRoute>
+        },
+        {
+          path:'/imported-products/:id' ,
+         element:<PrivateRoute><ProductDetails></ProductDetails></PrivateRoute>
+        },
+       
+        {
+          path:'/myImports' ,
+         element:<PrivateRoute><MyImports></MyImports></PrivateRoute>
         },
        
     ]

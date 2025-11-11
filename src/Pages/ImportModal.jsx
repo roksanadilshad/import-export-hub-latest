@@ -1,96 +1,80 @@
-import axios from "axios";
-import React, { useState } from "react";
-
+import React, { useState, useContext } from "react";
 import Swal from "sweetalert2";
+import { AuthContext } from "../Context/AuthContext";
 
 const ImportModal = ({ product, onClose, handleImported }) => {
-  
-  const [quantity, setQuantity] = useState("");
-  const [error, setError] = useState("");
+  const [quantity, setQuantity] = useState(1);
+  const { user } = useContext(AuthContext);
 
-
-  const handleChange = (e) => {
-    const value = Number(e.target.value);
-    setQuantity(value);
-
-    if (value > product.availableQuantity) {
-      setError("Import quantity exceeds available stock!");
-    } else if (value <= 0) {
-      setError("Quantity must be greater than 0");
-    } else {
-      setError("");
-    }
-  };
-
- 
-  const handleSubmit = async () => {
+  const handleImport = async () => {
+     const {productImage,
+    productName,
+    price,
+    originCountry,
+    rating,
+    _id} = product
     try {
-      const res = await axios.post("http://localhost:3000/import", {
-        productId: product._id,
-        quantity: Number(quantity),
+      const res = await fetch("http://localhost:3000/imports", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+       
+        body: JSON.stringify({
+          productId: _id,
+          productImage:productImage,
+          productName:productName,
+          price:price,
+          rating:rating,
+          originCountry:originCountry,
+          availableQuantity: Number(quantity),
+          import_by: user.email,
+            createdAt: new Date()
+        }),
       });
 
-      Swal.fire({
-        icon: "success",
-        title: "Imported!",
-        text: res.data.message,
-        timer: 2000,
-        showConfirmButton: false,
-      });
+      const data = await res.json();
 
-      handleImported(quantity); // optional: update parent UI
-      onClose();
+      if (res.ok) {
+        Swal.fire("Success", data.message, "success");
+        handleImported(Number(quantity)); // update quantity in parent
+        setQuantity(1);
+        onClose();
+      } else {
+        Swal.fire("Error", data.message, "error");
+      }
     } catch (err) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: err.response?.data?.message || "Something went wrong!",
-      });
+      console.error(err);
+      Swal.fire("Error", "Server error", "error");
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded-xl w-96 shadow-lg">
-        <h2 className="text-xl font-bold mb-4 text-center">
-          Import {product.productName}
-        </h2>
-
-        <p className="text-gray-600 mb-2">
-          Available Quantity:{" "}
-          <span className="font-semibold">{product.availableQuantity}</span>
-        </p>
-
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white p-6 rounded-xl w-80">
+        <h2 className="text-xl font-bold mb-4">Import {product.productName}</h2>
+        <p>Available:{product.availableQuantity}</p>
         <input
           type="number"
           min="1"
           max={product.availableQuantity}
           value={quantity}
-          onChange={handleChange}
-          className="border border-gray-300 rounded-md w-full p-2 mb-3"
-          placeholder="Enter import quantity"
+          onChange={(e) => setQuantity(e.target.value)}
+          className="border rounded px-3 py-2 w-full mb-4"
         />
-
-        {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
-
-        <div className="flex justify-between">
+        <div className="flex justify-end space-x-2">
           <button
-            className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-md"
             onClick={onClose}
+            className="px-4 py-2 bg-gray-300 rounded"
           >
             Cancel
           </button>
-
           <button
-            className={`${
-              error || !quantity
-                ? "bg-gray-300 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
-            } text-white px-4 py-2 rounded-md`}
-            onClick={handleSubmit}
-            disabled={!!error || !quantity}
+            onClick={handleImport}
+            disabled={quantity < 1 || quantity > product.availableQuantity}
+            className="px-4 py-2 bg-purple-500 text-white rounded disabled:opacity-50"
           >
-            Submit
+            Import
           </button>
         </div>
       </div>

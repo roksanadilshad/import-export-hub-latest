@@ -39,7 +39,7 @@ const AllProducts = () => {
 
         <div className=" w-11/12 mx-auto grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5">
         {products.map((product) => (
-          <ProductCard key={product._id} products={product} />
+          <ProductCard basePath="/products" key={product._id} products={product} />
         ))}
         </div>
         </div>

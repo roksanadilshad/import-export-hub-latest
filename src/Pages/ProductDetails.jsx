@@ -1,146 +1,134 @@
 import React, { useEffect, useState, useContext } from 'react';
-
 import { AuthContext } from '../Context/AuthContext';
 import Swal from 'sweetalert2';
-import { motion } from 'framer-motion';
-import { FaStar, FaStarHalf } from 'react-icons/fa6';
 import ImportModal from './ImportModal';
 import RatingStars from './RatingStars';
-import { useNavigate, useParams } from 'react-router';
+import Loading from './Loading';
+import { useParams } from 'react-router';
 
 const ProductDetails = () => {
-  const navigate = useNavigate();
   const { id } = useParams();
-  const [product, setProduct] = useState({});
+  const [product, setProduct] = useState([]);
   const { user, loading, setLoading } = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
+   const [refetch, setRefeth] = useState(false)
 
-  const {
+ 
+  useEffect(() => {
+    if (!user?.accessToken) return;
+    //setLoading(true);
+    fetch(`http://localhost:3000/products/${id}`, {
+      headers: {
+        authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data,id);
+        
+        setProduct(data.result)
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [user, id, setLoading, refetch]);
+
+    //console.log(product);
+
+   const {
     productImage,
     productName,
     price,
     originCountry,
     rating,
     availableQuantity,
+    exporterEmail,
+    _id
   } = product;
 
-  useEffect(() => {
-    if (!user?.accessToken) return;
-    fetch(`http://localhost:3000/products/${id}`, {
-      headers: {
-        authorization: `Bearer ${!user?.accessToken}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if(!data.result){
-          navigate('/all-models');
-          return;
-        }
-        setProduct(data.result);
-        setLoading(false);
-      })
-      .catch((err) => {
-      console.error(err);
-      navigate('/all-models');
-    });
-  }, [user, id, navigate, setLoading]);
-
   const handleImported = (quantity) => {
-    setProduct(prev => ({
-  ...prev,
-  availableQuantity: prev.availableQuantity - quantity,
-}));
+    setProduct((prev) => ({
+      ...prev,
+      availableQuantity: prev.availableQuantity - quantity,
+    }));
+    // setImportsUpdated((prev) => !prev);
+     const finalImport = {
+      productImage:productImage,
+      productName:productName,
+      availableQuantity: product.availableQuantity - quantity,
+      exporterEmail: exporterEmail,
+      createdAt: new Date(),
+      import_by: user.email,
+    };
 
-     fetch("http://localhost:3000/imports", {
+    fetch(`https://localhost:3000/imports/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${!user?.accessToken}`,
       },
-      body: JSON.stringify({
-        userId: user.uid,
-        productId: product._id,
-        quantity,
-      }),
+      body: JSON.stringify(finalImport),
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.error) {
-          Swal.fire("Error", data.error, "error");
-        } else {
-          Swal.fire("Success", "Product imported successfully!", "success");
-        }
+        console.log(data);
+       alert("Successfully downloaded!");
+        setRefeth(!refetch)
       })
-      .catch((err) => {
-        console.error(err);
-        Swal.fire("Error", "Something went wrong!", "error");
+       .catch((err) => {
+        console.log(err);
       });
-    
-  };
-
-  
-  if (loading) {
-    return <div> Loading...</div>;
   }
 
+
+  if (loading || !product?._id) {
+  return <Loading />;
+}
+
+
+
   return (
-    <div className="w-11/12 mx-auto my-16">
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: 'easeOut' }}
-        className="flex flex-col lg:flex-row bg-gradient-to-br from-[#fdfcfb] to-[#e2d1c3] rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden"
-      >
-        {/* Left Image Section */}
-        <motion.div
-          initial={{ scale: 0.95 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-          className="flex justify-center items-center bg-[#fff8f0] lg:w-1/2"
-        >
+    <div className="w-11/12 mx-auto my-12">
+      <div className="flex flex-col lg:flex-row bg-white shadow-2xl rounded-3xl overflow-hidden border border-gray-100 hover:shadow-3xl transition-all">
+        {/* Product Image */}
+        <div className="lg:w-1/2 relative group overflow-hidden flex justify-center items-center bg-gray-50">
           <img
             src={productImage}
             alt={productName}
-            className="w-[90%] h-[90%] object-cover rounded-3xl hover:scale-105 transition-transform duration-500"
+            className="w-full max-h-[28rem] md:max-h-[24rem] object-contain lg:object-cover transition-transform transform group-hover:scale-105 group-hover:rotate-1"
           />
-        </motion.div>
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black opacity-20 transition-opacity duration-700"></div>
+        </div>
 
-        {/* Right Details Section */}
-        <div className="flex flex-col justify-center lg:w-1/2 p-8 space-y-5">
-          <h2 className="text-4xl font-bold text-gray-800 tracking-wide">
+        {/* Product Info */}
+        <div className="lg:w-1/2 p-10 flex flex-col justify-between space-y-6">
+          <h2 className="text-4xl font-extrabold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
             {productName}
           </h2>
 
-          <div className="flex items-center text-yellow-500">
-            <span className="text-lg font-semibold mr-2 text-gray-700">
-              {rating}
-            </span>
+          <div className="flex items-center space-x-3 text-amber-400">
+            <span className="text-lg font-semibold text-gray-800">{rating}</span>
             <RatingStars rating={rating} />
           </div>
 
-          <p className="text-gray-600 text-lg">
-            <span className="font-semibold text-gray-800">Price:</span> ${price}
-          </p>
+          <div className="space-y-3 text-gray-700 font-medium">
+            <p>
+              <span className="font-bold">Price:</span> ${price}
+            </p>
+            <p>
+              <span className="font-bold">Available:</span> {availableQuantity}
+            </p>
+            <p>
+              <span className="font-bold">Made in:</span> {originCountry}
+            </p>
+          </div>
 
-          <p className="text-gray-600 text-lg">
-            <span className="font-semibold text-gray-800">Available:</span>{' '}
-            {availableQuantity}
-          </p>
-
-          <p className="text-gray-600 text-lg">
-            <span className="font-semibold text-gray-800">Made In:</span>{' '}
-            {originCountry}
-          </p>
-
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <button
             onClick={() => setShowModal(true)}
-            className="mt-6  bg-secondary text-white text-lg font-semibold px-6 py-3 rounded-2xl shadow-md hover:shadow-xl transition duration-300"
+            className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 px-6 rounded-xl hover:scale-105 hover:shadow-xl transition-transform duration-500 ease-in-out"
           >
             Import Now
-          </motion.button>
+          </button>
 
           {showModal && (
             <ImportModal
@@ -150,7 +138,7 @@ const ProductDetails = () => {
             />
           )}
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 };
