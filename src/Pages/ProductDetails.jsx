@@ -28,7 +28,7 @@ const ProductDetails = () => {
     if (!user?.accessToken) return;
     fetch(`http://localhost:3000/products/${id}`, {
       headers: {
-        authorization: `Bearer ${user.accessToken}`,
+        authorization: `Bearer ${!user?.accessToken}`,
       },
     })
       .then((res) => res.json())
@@ -47,7 +47,36 @@ const ProductDetails = () => {
   }, [user, id, navigate, setLoading]);
 
   const handleImported = (quantity) => {
-    product.availableQuantity -= quantity;
+    setProduct(prev => ({
+  ...prev,
+  availableQuantity: prev.availableQuantity - quantity,
+}));
+
+     fetch("http://localhost:3000/imports", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${!user?.accessToken}`,
+      },
+      body: JSON.stringify({
+        userId: user.uid,
+        productId: product._id,
+        quantity,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          Swal.fire("Error", data.error, "error");
+        } else {
+          Swal.fire("Success", "Product imported successfully!", "success");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        Swal.fire("Error", "Something went wrong!", "error");
+      });
+    
   };
 
   
