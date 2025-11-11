@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Swal from "sweetalert2";
 
 const ImportModal = ({ product, onClose, handleImported }) => {
+  
   const [quantity, setQuantity] = useState("");
   const [error, setError] = useState("");
 
