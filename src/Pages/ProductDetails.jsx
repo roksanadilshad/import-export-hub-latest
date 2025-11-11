@@ -11,7 +11,7 @@ const ProductDetails = () => {
   const [product, setProduct] = useState([]);
   const { user, loading, setLoading } = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
-   const [refetch, setRefeth] = useState(false)
+   //const [refetch, setRefeth] = useState(false)
 
  
   useEffect(() => {
@@ -32,7 +32,7 @@ const ProductDetails = () => {
       .catch((err) => {
         console.error(err);
       });
-  }, [user, id, setLoading, refetch]);
+  }, [user, id, setLoading]);
 
     //console.log(product);
 
@@ -43,7 +43,6 @@ const ProductDetails = () => {
     originCountry,
     rating,
     availableQuantity,
-    exporterEmail,
     _id
   } = product;
 

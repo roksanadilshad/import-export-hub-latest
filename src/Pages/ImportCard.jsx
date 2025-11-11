@@ -2,18 +2,62 @@ import React from 'react';
 import { FaHeart, FaStar } from 'react-icons/fa';
 import { FiShoppingCart } from 'react-icons/fi';
 import { Link } from 'react-router';
+import Swal from 'sweetalert2';
 
-const ImportCard = ({products}) => {
-    console.log(products);
+const ImportCard = ({products, setProducts}) => {
+    
+    //console.log(products);
     const {productImage,
         productName, _id,
         price,
         originCountry, 
         rating,
     availableQuantity,
-    productId
+    productId,
 } = products
     
+const handleDlete = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:3000/imports/${_id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            if(data.success){
+                Swal.fire("Deleted!", "Your product has been deleted.", "success");
+                setProducts((prev) => prev.filter((p) => p._id !== _id));
+            }
+            else{
+             Swal.fire({
+              title: "Deleted!",
+              text: "Your file has been deleted.",
+              icon: "success",
+            });
+            }
+            //navigate("/myImports");
+
+            
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        }
+    })
+}
+
     return (
         <div>
            <div className="card h-full  bg-neutral w-full shadow-sm rounded-2xl">
@@ -46,8 +90,9 @@ const ImportCard = ({products}) => {
         
         </span>
     
-    <div className="card-actions justify-end">
-      <Link to={`/productDetails/${productId}`} className="btn border-white btn-secondary w-full">See Details</Link>
+    <div className="card-actions flex justify-evenly items-center pt-2">
+      <Link to={`/productDetails/${productId}`} className="btn border-white btn-secondary ">See Details</Link>
+      <button onClick={handleDlete} className="btn btn-secondary border-white">Remove</button>
     </div>
   </div>
 </div>

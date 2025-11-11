@@ -18,8 +18,23 @@ const MyImports = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-        setProducts(data);
+
+        const margeProduct = [];
+
+        data.forEach((products)=>{
+            const existing = margeProduct.find(
+                (p) => p.productId === products.productId
+            );
+            if(existing){
+                existing.availableQuantity += products.availableQuantity
+                     
+            }
+            else{
+                margeProduct.push({...products})
+            }
+        })
+        //console.log(margeProduct);
+        setProducts(margeProduct);
         setLoading(false);
       })
       .catch((err) => {
@@ -28,15 +43,15 @@ const MyImports = () => {
       });
   }, [user, setLoading]);
 
-  if (loading) {
-    return <div>Please wait... Loading...</div>;
-  }
+//   if (loading) {
+//     return <div>Please wait... Loading...</div>;
+//   }
 
   return (
     <div>
       <div className="grid grid-cols-3 lg:grid-cols-4 gap-3">
         {products.map((products) => (
-          <ImportCard key={products._id} products={products} />
+          <ImportCard key={products._id} setProducts={setProducts} products={products} />
         ))}
       </div>
     </div>
