@@ -1,22 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { CiFacebook, CiLinkedin } from 'react-icons/ci';
 import { FaCartShopping, FaShip, FaXTwitter } from 'react-icons/fa6';
 import { IoIosArrowForward } from 'react-icons/io';
 import { TbBrandGoogle } from 'react-icons/tb';
-import WhatIDo from './whatIDo';
 import { useLoaderData } from 'react-router';
 import ProductCard from '../Components/ProductCArd';
 import { RiImportLine } from 'react-icons/ri';
 import { FaShoppingBag } from 'react-icons/fa';
+import { AuthContext } from '../Context/AuthContext';
+import Loading from './Loading';
+import Skleton from './Skleton';
 
 const Home = () => {
+    const {loading} = use(AuthContext)
     const products = useLoaderData()
     const [popularProducts, setPopularProducts] = useState([]);
     //console.log(latestProducts);
     const latestProducts = products.slice(0,6)
    
     useEffect(() => {
-    fetch('http://localhost:3000/popular-products')
+    fetch('https://import-export-server.vercel.app/popular-products')
       .then(res => res.json())
       .then(data => setPopularProducts(data))
       .catch(err => console.error('Error fetching popular products:', err));
@@ -32,10 +35,10 @@ const Home = () => {
             <div className="absolute inset-0 bg-black/40"></div>
          <div className='relative  z-10'>
 
-            <div className='md:pt-10 lg:pt-20 pt-15  xl:pt-28 w-11/12 mx-auto *:pb-2'>
+            <div className='md:pt-10 lg:pt-20 pt-15  xl:pt-64 w-11/12 mx-auto *:pb-2'>
             <h4 className='lg:text-2xl text-[12px] md:text-xl text-primary font-bold'>Connecting Global Markets, One Click at a Time</h4>
-            <h2 className='lg:text-4xl text-[16px] md:text-2xl text-white font-bold'>Discover, import, and export products worldwide <br/>
-            <span className='lg:text-6xl md:text-5xl text-2xl text-accent font-bold' >— all from one seamless platform
+            <h2 className='lg:text-4xl xl:text-6 text-[16px] md:text-2xl text-white font-bold'>Discover, import, and export products worldwide <br/>
+            <span className='lg:text-6xl xl:text-8xl md:text-5xl text-2xl text-accent font-bold' >— all from one seamless platform
                 </span></h2>
 
                 <button className='btn my-5  border-white btn-secondary text-white pt-1'>CONTACT ME<span><IoIosArrowForward></IoIosArrowForward></span></button>
@@ -66,7 +69,7 @@ const Home = () => {
                   </div>
               </div>
               <div className='bg-accent dark:bg-neutral p-4 rounded-2xl'>
-                  <h3 className=' lg:text-2xl text-xl dark:text-neturl font-bold text-primary pb-4'>EXPORT</h3>
+                  <h3 className=' lg:text-2xl text-xl dark:text-accent font-bold text-primary pb-4'>EXPORT</h3>
                   <div className='flex justify-between gap-6'>
                        <FaShip className='dark:text-accent text-primary text-5xl w-[70%]'></FaShip>
                   <p className='font-semibold lg:text-[16px] dark:text-accent text-[12px] text-neutral'>The Export section empowers businesses to showcase their products to a global audience. List your export-ready goods, manage orders, and set preferred shipping routes effortlessly. We help you connect with international buyers, streamline documentation, and expand your brand presence in new markets. From order confirmation to delivery, our tools make exporting smooth, transparent, and profitable.</p>
@@ -74,7 +77,7 @@ const Home = () => {
                   </div>
               </div>
               <div className='bg-accent dark:bg-neutral p-4 rounded-2xl'>
-                  <h3 className='lg:text-2xl text-xl dark:text-neturl font-bold text-primary pb-4'>BUY</h3>
+                  <h3 className='lg:text-2xl text-xl dark:text-accent font-bold text-primary pb-4'>BUY</h3>
                   <div className='flex justify-between gap-6'>
                   <p className='font-semibold lg:text-[16px] dark:text-accent text-[12px] text-neutral'>Our Buy section simplifies the purchasing process for businesses and individual traders. Browse thousands of verified listings, compare deals from multiple suppliers, and purchase directly through secure payment options. Each product listing comes with detailed specifications and shipping information to help you make smart buying decisions without delays or hidden costs.</p>
                   <FaCartShopping className='dark:text-accent text-primary text-5xl w-[70%]'></FaCartShopping>
@@ -101,9 +104,13 @@ const Home = () => {
            <h2 className='border-b-4 border-secondary w-100 mx-auto  font-bold text-4xl text-center text-accent '>LATEST PRODUCTS</h2>
         </div>
         <div className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 w-11/12 mx-auto lg:pb-20'>
-            {
+           {
+            loading ? (<Skleton count={products.length}></Skleton>) : (
+                 
                 latestProducts.map(products=> <ProductCard key={products._id} products={products}></ProductCard>)
-            }
+            
+            )
+           }
         </div>
     </section>
     <section>
@@ -112,10 +119,11 @@ const Home = () => {
            <h2 className='border-b-4 border-secondary w-100 mx-auto  font-bold text-4xl text-center text-accent '>POPULAR PRODUCTS</h2>
         </div>
         <div className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 w-11/12 mx-auto pb-20'>
-            {
-                popularProducts.map(products=> <ProductCard key={products._id} products={products}></ProductCard>)
+            { loading ? (<Skleton count={products.length}></Skleton>) :( popularProducts.map(products=> <ProductCard key={products._id} products={products}></ProductCard>))
+               
             }
         </div>
+        {/* What i Do */}
         <section className="block lg:hidden relative bg-[url('https://images.pexels.com/photos/3063470/pexels-photo-3063470.jpeg')] bg-cover bg-center bg-no-repeat object-cover pb-10 lg:pb-20">
         <div className="absolute inset-0 bg-black/70"></div>
         <div className='relative  z-10'>

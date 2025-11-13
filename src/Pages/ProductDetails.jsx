@@ -5,6 +5,7 @@ import { useParams } from 'react-router';
 import RatingStars from './RatingStars';
 import ImportModal from './ImportModal';
 import ProductCard from '../Components/ProductCArd';
+import ErrorPage from './ErrorPage';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -19,7 +20,7 @@ const ProductDetails = () => {
   useEffect(() => {
     if (!user?.accessToken) return;
     //setLoading(true);
-    fetch(`http://localhost:3000/products/${id}`, {
+    fetch(`https://import-export-server.vercel.app/products/${id}`, {
       headers: {
         authorization: `Bearer ${user.accessToken}`,
       },
@@ -35,7 +36,7 @@ const ProductDetails = () => {
         console.error(err);
       });
 
-      fetch(`http://localhost:3000/latest-products`)
+      fetch(`https://import-export-server.vercel.app/latest-products`)
       .then(res => res.json())
       .then(data => setLatestProducts(data));
   }, [user, id, setLoading]);
@@ -62,7 +63,7 @@ const ProductDetails = () => {
   }
 
   if (loading || !product?._id) {
-  return <Loading />;
+  return <ErrorPage></ErrorPage>;
 }
 
   return (
@@ -117,6 +118,8 @@ const ProductDetails = () => {
               handleImported={handleImported}
             />
           )}
+
+          <h2 className='border-b-4 border-secondary w-100 mx-auto  font-bold text-4xl text-center text-accent py-5'>LATEST PRODUCTS</h2>
            <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4  py-5 lg:py-10'>
             {
               showProducts.map(products => <ProductCard products={products} key={products._id}></ProductCard> )

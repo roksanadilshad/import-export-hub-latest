@@ -17,7 +17,7 @@
 
 } */
 
-@plugin "daisyui/theme" {
+/* @plugin "daisyui/theme" {
   name: "light";
   default: true;
 
@@ -34,10 +34,21 @@
   --color-secondary: #003161; 
   --color-accent: #FFF4B7;   
   --color-neutral: #006A67;   
+} */
+
+:root {
+  --color-primary: #EFECE3;
+  --color-secondary: #4A70A9;
+  --color-accent: #000000;
+  --color-neutral: #8FABD4;
 }
 
-
-
+[data-theme="dark"] {
+  --color-primary: #000B58;
+  --color-secondary: #003161;
+  --color-accent: #FFF4B7;
+  --color-neutral: #006A67;
+}
 
 body{
    

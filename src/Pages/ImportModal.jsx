@@ -40,7 +40,7 @@ const ImportModal = ({ product, onClose, handleImported }) => {
 //console.log(modalData);
 
     try {
-      const res = await fetch("http://localhost:3000/imports", {
+      const res = await fetch("https://import-export-server.vercel.app/imports", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

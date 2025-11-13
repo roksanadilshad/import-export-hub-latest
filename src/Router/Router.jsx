@@ -11,16 +11,16 @@ import MyImports from '../Pages/MyImports';
 import AddExport from '../Pages/AddExport';
 import MyExport from '../Pages/MyExport';
 import UpdateExport from '../Components/UpdateExport';
+import ErrorPage from '../Pages/ErrorPage';
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element:<Root></Root>,
-    //errorElement:<p>Add Firebase</p>,
     children: [
         {
             index: true,
-            loader:()=> fetch('http://localhost:3000/latest-products'),
+            loader:()=> fetch('https://import-export-server.vercel.app/latest-products'),
             //errorElement: <p>Page Not Found</p>,
             element:<Home></Home>,
         },
@@ -35,7 +35,7 @@ export const router = createBrowserRouter([
        
         {
           path:'/allProducts' ,
-          loader:()=> fetch('http://localhost:3000/products'),
+          loader:()=> fetch('https://import-export-server.vercel.app/products'),
          element:<AllProducts></AllProducts>
         },
         {
@@ -64,6 +64,10 @@ export const router = createBrowserRouter([
           path:'/updateExport/:id' ,
          element:<PrivateRoute><UpdateExport></UpdateExport></PrivateRoute>,
         },
+        {
+          path:'/*',
+          element:<ErrorPage></ErrorPage>
+        }
        
        
     ]

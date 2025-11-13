@@ -25,14 +25,14 @@ const Header = () => {
         .catch()
     }
     const links = <>
-    <li><NavLink className=' lg:text-[12px] xl:text-[16px] lg:m-0 lg:p-1' to='/'>Home</NavLink></li>
-    <li><NavLink className=' lg:text-[12px] xl:text-[16px] lg:m-0 lg:p-1' to='/allProducts'>All Products</NavLink></li>
-    <li><NavLink className=' lg:text-[12px] xl:text-[16px] lg:m-0 lg:p-1' to='/my-exports'>My Exports</NavLink></li>
-    <li><NavLink className=' lg:text-[12px] xl:text-[16px] lg:m-0 lg:p-1' to='/myImports'>My Imports</NavLink></li>
-    <li><NavLink className=' lg:text-[12px] xl:text-[16px] lg:m-0 lg:p-1' to='/addExport'>Add Export</NavLink></li>
+    <li><NavLink className=' lg:text-[12px] xl:text-[16px] lg:m-0 xl:m-2 lg:p-1' to='/'>Home</NavLink></li>
+    <li><NavLink className=' lg:text-[12px] xl:text-[16px] lg:m-0 xl:m-2 lg:p-1' to='/allProducts'>All Products</NavLink></li>
+    <li><NavLink className=' lg:text-[12px] xl:text-[16px] lg:m-0 xl:m-2 lg:p-1' to='/my-exports'>My Exports</NavLink></li>
+    <li><NavLink className=' lg:text-[12px] xl:text-[16px] lg:m-0 xl:m-2 lg:p-1' to='/myImports'>My Imports</NavLink></li>
+    <li><NavLink className=' lg:text-[12px] xl:text-[16px] lg:m-0 xl:m-2 lg:p-1' to='/addExport'>Add Export</NavLink></li>
     </>
     return (
-        <div className=" bg-[#8FABD4] lg:px-20  navbar shadow-sm flex justify-between items-center">
+        <div className=" bg-[#8FABD4] dark:bg-accent lg:px-20  navbar shadow-sm flex justify-between items-center">
   <div className="flex justify-between items-center">
     <div className="dropdown">
        <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -53,7 +53,7 @@ const Header = () => {
      <div className='flex justify-center items-center'>
       
    <img src="https://i.ibb.co.com/QvWc04mY/t-removebg-preview.png" alt=""  className='lg:w-15 w-6 '/>
-   <h3 className='lg:font-bold font-semibold text-[12px] md:text-xl lg:text-2xl text-[#EFECE3]'>Import Export <span className='text-[#4A70A9]'>Hub</span></h3>
+   <h3 className='lg:font-bold font-semibold text-[12px] md:text-xl lg:text-2xl text-primary'>Import Export <span className='text-[#4A70A9]'>Hub</span></h3>
     </div>
     </Link>
   <div className="justify-center items-center hidden lg:flex">

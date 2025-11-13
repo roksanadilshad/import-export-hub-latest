@@ -1,13 +1,19 @@
 
+import { use } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router';
+import { AuthContext } from '../Context/AuthContext';
 
 
 const UpdateExport = ({ product, onClose, setProducts }) => {
+  const {user} = use(AuthContext)
      const navigate = useNavigate()
   // Handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+
+     if (!user?.accessToken) return;
 
     const formData = {
      productName: e.target.productName.value,
@@ -19,28 +25,50 @@ const UpdateExport = ({ product, onClose, setProducts }) => {
 
     }
 
-    fetch(`http://localhost:3000/exports/${product._id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      })
-      .then((res) => res.json())
-      .then((data) => {
-        
+    try {
+      const res = await fetch(
+        `https://import-export-server.vercel.app/exports/${product._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${user.accessToken}`, // Firebase token
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+       let data;
+      try {
+        data = await res.json();
+      } catch (err) {
+        const text = await res.text();
+        console.error("Backend returned non-JSON response:", text);
+        toast.error("Server did not return valid JSON.");
+        return;
+      }
   //console.log(data)
-  if (data.success) {
-     toast.success("Successfully updated!");
-      navigate('/'); // or wherever your home/latest-products route is
+ 
+      if (res.ok && data.success) {
+        toast.success("Product updated successfully!");
+
+        // Update local state
+        setProducts((prev) =>
+          prev.map((p) =>
+            p._id === product._id ? { ...p, ...formData } : p
+          )
+        );
+
+        onClose();
+        navigate('/'); // or your latest-products route
+      } else {
+        toast.error(data.message || "Unauthorized or failed to update.");
+      }
+    } catch (err) {
+      console.error("Error updating product:", err);
+      toast.error("Something went wrong while updating.");
     }
-
-  // Update local product list without refetching
-  setProducts((prev) =>
-    prev.map((p) => (p._id.toString() === product._id.toString() ? product : p))
-  );
-
-  onClose();
-});
   };
+
 
 
     

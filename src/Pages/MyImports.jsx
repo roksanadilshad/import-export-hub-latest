@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../Context/AuthContext";
 import ImportCard from "../Components/ImportCard";
+import Skleton from "./Skleton";
+import Loading from "./Loading";
 
 const MyImports = () => {
        const { user, loading, setLoading } = useContext(AuthContext);
@@ -11,7 +13,7 @@ const MyImports = () => {
        if (!user?.accessToken) return;
    
        // setLoading(true);
-       fetch(`http://localhost:3000/my-imports?email=${user.email}`, {
+       fetch(`https://import-export-server.vercel.app/my-imports?email=${user.email}`, {
          headers: {
            authorization: `Bearer ${user.accessToken}`,
       },
@@ -44,7 +46,7 @@ const MyImports = () => {
   }, [user, setLoading]);
 
   if (loading) {
-    return <div>Please wait... Loading...</div>;
+    return <div><Skleton count={products.length}></Skleton></div>;
   }
 
   return (
@@ -55,9 +57,11 @@ const MyImports = () => {
       </div>
       <h2 className='border-b-4 border-secondary lg:w-120 w-80 mx-auto  font-bold text-2xl lg:text-4xl text-center text-accent my-5 lg:my-10'>MY IMPORT PRODUCTS</h2>
       <div className=" w-11/12 mx-auto grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 py-10">
-        {products.map((products) => (
+        { loading ? (<Skleton count={products.length}></Skleton>) : 
+       ( products.map((products) => (
           <ImportCard key={products._id} setProducts={setProducts} products={products} />
-        ))}
+        )))
+        }
       </div>
     </div>
   );

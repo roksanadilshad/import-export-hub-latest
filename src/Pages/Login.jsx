@@ -1,10 +1,10 @@
 import { use, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../Context/AuthContext";
-import Loader from "./Loader";
 import { LuEyeClosed } from "react-icons/lu";
 import { FaEye } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import Loader from "./Loader";
 
 
 

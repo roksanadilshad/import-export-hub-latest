@@ -3,18 +3,18 @@ import { Link } from 'react-router';
 
 const Footer = () => {
   return (
-    <footer className="footer sm:footer-horizontal bg-[#8FABD4] text-neutral-content p-5 lg:p-10">
+    <footer className="footer  sm:footer-horizontal bg-[#8FABD4] dark:bg-accent text-neutral-content dark:text-primary p-5 lg:p-10">
   <aside>
    <Link to='/'>
      <div className='flex justify-center items-center'>
       
    <img src="https://i.ibb.co.com/QvWc04mY/t-removebg-preview.png" alt=""  className='lg:w-15 w-8'/>
-   <h3 className='lg:font-bold font-semibold text-[16px] lg:text-2xl text-[#EFECE3]'>Import Export <span className='text-[#4A70A9]'>Hub</span></h3>
+   <h3 className='lg:font-bold font-semibold text-[16px] lg:text-2xl text-[#EFECE3] dark:text-primary'>Import Export <span className='text-[#4A70A9]'>Hub</span></h3>
     </div>
     </Link>
     <a className='cursor-pointer' href="">Contact Us</a>
     <p className='text-[16px]'>
-      Import Export Hub
+      <span className='font bold'>Import Export Hub</span>
       <br />
       Copyright © {new Date().getFullYear()} - All right reserved
     </p>

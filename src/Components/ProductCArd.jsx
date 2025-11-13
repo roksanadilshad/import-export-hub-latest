@@ -33,14 +33,14 @@ const ProductCard = ({products}) => {
     <FaHeart className="absolute top-3 right-3 text-3xl text-secondary hover:text-primary  cursor-pointer transition-all" />
   </div>
   <div className="text-center text-primary">
-    <h2 className="text-2xl font-semibold text-primary">{productName
+    <h2 className="text-2xl font-semibold text-primary dark:text-accent">{productName
 }</h2>
     <div className='flex justify-evenly items-center'>
     <span>Available:{availableQuantity}</span>
     <span>Price:{price}$</span>
     </div>
     <div className='flex justify-center items-center'>
-          <RatingStars rate={rating} />
+          <p>{rating}</p> <RatingStars rate={rating} />
     </div>
     <span>Made in {originCountry}</span>
     <span>

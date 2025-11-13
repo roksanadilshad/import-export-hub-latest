@@ -2,6 +2,7 @@ import React, { use, useState, } from 'react';
 import { useLoaderData } from 'react-router';
 import { AuthContext } from '../Context/AuthContext';
 import ProductCard from '../Components/ProductCArd';
+import Skleton from './Skleton';
 
 
 
@@ -18,7 +19,7 @@ const AllProducts = () => {
     console.log(search_text)
     setLoading(true)
 
-    fetch(`http://localhost:3000/search?search=${search_text}`)
+    fetch(`https://import-export-server.vercel.app/search?search=${search_text}`)
     .then(res=> res.json())
     .then(data=> {
       //console.log(data)
@@ -44,9 +45,11 @@ const AllProducts = () => {
         </form>
 
         <div className=" w-11/12 mx-auto grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 py-10">
-        {products.map((product) => (
-          <ProductCard basePath="/products" key={product._id} products={product} />
-        ))}
+        { loading ? (<Skleton count={products.length}></Skleton>) : 
+        (products.map((product) => (
+          <ProductCard basePath="/products" key={product._id} products={product} />)
+        ))
+        }
         </div>
         </div>
     );
