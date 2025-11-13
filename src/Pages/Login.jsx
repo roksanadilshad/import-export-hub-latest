@@ -5,6 +5,7 @@ import { LuEyeClosed } from "react-icons/lu";
 import { FaEye } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import Loader from "./Loader";
+import toast from "react-hot-toast";
 
 
 
@@ -32,10 +33,10 @@ const Login = () => {
       .then(() =>{
         //console.log(result);
         navigate(from, {replace:true})
-        //toast.success('Logged in successfully! 🎉');
+        toast.success('Logged in successfully! 🎉');
       })
       .catch(err => {
-        //toast.error(err.message);
+        toast.error(err.message);
         setErr(err)
       })
       
@@ -45,10 +46,10 @@ const Login = () => {
          .then(result => {
             console.log(result.user);
             navigate(from, {replace:true})
-           //toast.success('Logged in successfully! 🎉');
+           toast.success('Logged in successfully! 🎉');
          })
          .catch(err => {
-            //toast.error(err.message);
+            toast.error(err.message);
             console.log(err); 
          })
     }

@@ -5,6 +5,7 @@ import { AuthContext } from '../Context/AuthContext';
 import { LuEyeClosed } from 'react-icons/lu';
 import { FaEye } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
+import toast from 'react-hot-toast';
 
 const Registration = () => {
      const {createUser, setUser, signInWithGoogle, updateUserProfile} = use(AuthContext);
@@ -28,7 +29,7 @@ const navigate = useNavigate();
 
          if(!passwordPattern.test(password)){
           setError('Passowerd must be contain at least 6 characters long, include one uppercase, one lowercase and special character')
-          //toast.error('Passowerd must be contain at least 6 characters long, include one uppercase, one lowercase and special character')
+          toast.error('Passowerd must be contain at least 6 characters long, include one uppercase, one lowercase and special character')
           return
          }
 
@@ -44,7 +45,7 @@ const navigate = useNavigate();
          setSuccess(false);
 
          if(!terms){
-          //toast.error('Please accept our terms and condition.');
+          toast.error('Please accept our terms and condition.');
           return;
          }
 
@@ -60,7 +61,7 @@ const navigate = useNavigate();
           setSuccess(true);
           setError('');
           e.target.reset();
-          //toast.success("Sign up successfull")
+          toast.success("Sign up successfull")
            navigate(from, {replace:true});
         });
       })
@@ -78,14 +79,14 @@ const navigate = useNavigate();
         const handleGoogleSignIn = () =>{
          signInWithGoogle()
          .then(() => {
-          //toast.success("Sign up successfull")
+          toast.success("Sign up successfull")
             //console.log(result.user);
             navigate(from, {replace:true})
             
          })
          .catch(err => {
             console.log(err);
-           // toast.error(err.message)
+           toast.error(err.message)
          })
     }
     
