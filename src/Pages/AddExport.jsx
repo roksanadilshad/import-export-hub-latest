@@ -44,7 +44,7 @@ const AddExport = () => {
         </div>
           <div className="card border m-10 border-gray-200 bg-neutral w-full max-w-md mx-auto shadow-2xl rounded-2xl">
       <div className="card-body p-6 relative">
-       <h2 className='border-b-4 border-secondary lg:w-120 w-80 mx-auto  font-bold text-2xl lg:text-4xl text-center text-accent my-5 lg:my-10'>ADD NEW PRODUCTS</h2>
+       <h2 className='border-b-4 border-secondary lg:w-80 w-80 mx-auto  font-bold text-2xl lg:text-4xl text-center text-accent my-5 lg:my-10'>ADD NEW PRODUCTS</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Name Field */}
           <div>
