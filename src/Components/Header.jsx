@@ -1,4 +1,4 @@
-import React, { use} from 'react';
+import React, { use, useEffect, useState} from 'react';
 import { Link, Navigate, NavLink } from 'react-router';
 import { AuthContext } from '../Context/AuthContext';
 import { FaLock } from 'react-icons/fa';
@@ -6,7 +6,19 @@ import { FaLock } from 'react-icons/fa';
 const Header = () => {
     const {user, signOutUser} = use(AuthContext);
     //console.log(user);
-    
+     const [theme, setTheme] = useState(localStorage.getItem('theme') || "light")
+
+  useEffect(() => {
+    const html = document.querySelector('html')
+     html.setAttribute("data-theme", theme)
+      html.classList.toggle('dark', theme === 'dark') 
+     localStorage.setItem("theme", theme)
+  }, [theme])
+
+
+  const handleTheme = (checked) => {
+    setTheme(checked ? "dark": "light")
+  }
     const handleSignout = () =>{
         signOutUser()
         .then()
@@ -50,7 +62,12 @@ const Header = () => {
     </ul>
   </div>
   </div>
-  <div className="">
+  <div className="flex justify-center items-center">
+    <input
+           onChange={(e)=> handleTheme(e.target.checked)}
+           type="checkbox"
+           defaultChecked={localStorage.getItem('theme') === "dark"}
+           className="toggle mr-4"/>
     {
         user ? 
         (<>

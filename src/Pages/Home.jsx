@@ -13,7 +13,10 @@ const Home = () => {
     //console.log(latestProducts);
     const latestProducts = products.slice(0,6)
     return (
-        <div className=''>
+        <div>
+            <div>
+           <title>Home</title>
+            </div>
             <div className="relative bg-[url('https://images.pexels.com/photos/577210/pexels-photo-577210.jpeg')] bg-cover bg-center h-screen">
             <div className="absolute inset-0 bg-black/30"></div>
 
@@ -24,7 +27,7 @@ const Home = () => {
                 </span></h2>
 
                 <button className='btn my-5  border-white btn-secondary text-white pt-1'>CONTACT ME<span><IoIosArrowForward></IoIosArrowForward></span></button>
-                <div className='*:btn flex *:text-lg  *:not-first:m-2 *: *:bg-secondary *:rounded-full *:p-1 *:hover:bg-white  *:hover:text-secondary *:text-primary items-center w-[30%] '>
+                <div className='*:btn flex *:text-lg  *:not-first:m-2 *: *:bg-secondary *:rounded-full *:p-1 *:hover:bg-white  *:hover:text-secondary *:text-primary *:dark:text-accent items-center w-[30%] '>
                    <CiFacebook></CiFacebook>
                    <FaXTwitter></FaXTwitter>
                    <TbBrandGoogle></TbBrandGoogle>

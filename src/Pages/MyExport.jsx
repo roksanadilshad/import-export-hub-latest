@@ -31,6 +31,10 @@ const MyExport = () => {
 
     return (
         <div>
+            <div>
+
+            <title>My Export</title>
+            </div>
            <div className='w-11/12 mx-auto grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 py-10'>
             {products.map(products => <ExportCard key={products._id} setproducts={setproducts} products={products}></ExportCard>)}
            </div>

@@ -3,7 +3,7 @@ import { CiHeart } from 'react-icons/ci';
 import { FaHeart, FaRegStar, FaStar } from 'react-icons/fa6';
 import { FiHeart, FiShoppingCart } from 'react-icons/fi';
 import { Link } from 'react-router';
-import RatingStars from '../Pages/RatingStars';
+import RatingStars from './RatingStars';
 
 const ProductCard = ({products}) => {
       //console.log(products);

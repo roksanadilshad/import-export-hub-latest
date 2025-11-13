@@ -61,7 +61,7 @@ const Login = () => {
    
     return (
       <div>
-        <div><title>WarmPaws Log in</title></div>
+        <div><title>Log In</title></div>
 {
   loading ? (<Loader></Loader>) : (<div className=" lg:mt-40 mt-20  min-h-screen">
   <div className=" flex-col flex justify-center items-center ">

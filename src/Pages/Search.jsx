@@ -3,6 +3,10 @@ import React from 'react';
 const Search = () => {
     return (
         <div>
+            <div>
+
+            <title>Search</title>
+            </div>
              <section>
             <div className='text-center flex flex-col items-center py-20 bg-neutral'>
 

@@ -35,7 +35,7 @@ const ImportModal = ({ product, onClose, handleImported }) => {
           originCountry:originCountry,
           quantity: qty,
           import_by: user.email,
-            createdAt: new Date()
+          createdAt: new Date()
     }
 //console.log(modalData);
 
@@ -65,6 +65,8 @@ const ImportModal = ({ product, onClose, handleImported }) => {
   };
 
   return (
+    <div>
+      <div><title>Import Modal</title></div>
      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded-xl w-80 shadow-lg">
         <h2 className="text-xl font-bold mb-4 text-center">
@@ -101,6 +103,7 @@ const ImportModal = ({ product, onClose, handleImported }) => {
           </button>
         </div>
       </div>
+    </div>
     </div>
   );
 };

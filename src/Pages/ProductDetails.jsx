@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../Context/AuthContext';
-import Swal from 'sweetalert2';
-import ImportModal from './ImportModal';
-import RatingStars from './RatingStars';
 import Loading from './Loading';
 import { useParams } from 'react-router';
+
+
+import RatingStars from './RatingStars';
+import ImportModal from './ImportModal';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -62,20 +63,28 @@ const ProductDetails = () => {
 
 
   return (
-    <div className="w-11/12 mx-auto my-12">
-      <div className="flex flex-col lg:flex-row bg-white shadow-2xl rounded-3xl overflow-hidden border border-gray-100 hover:shadow-3xl transition-all">
+    <div>
+      <div>
+
+   <title>Product Details</title>
+      </div>
+    <div className="card-side card bg-neutral shadow-sm mx-10 my-20">
+      {/* <div className="flex flex-col lg:flex-row bg-neutral shadow-2xl rounded-3xl overflow-hidden border border-gray-100 hover:shadow-3xl transition-all"> */}
         {/* Product Image */}
-        <div className="lg:w-1/2 relative group overflow-hidden flex justify-center items-center bg-gray-50">
+        {/* <div className="lg:w-1/2 relative  overflow-hidden flex justify-center items-center bg-gray-50"> */}
+       <div className=''>
+
           <img
             src={productImage}
             alt={productName}
-            className="w-full max-h-[28rem] md:max-h-[24rem] object-contain lg:object-cover transition-transform transform group-hover:scale-105 group-hover:rotate-1"
+            className="w-full h-full  transition-transform transform group-hover:scale-105 group-hover:rotate-1"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black opacity-20 transition-opacity duration-700"></div>
-        </div>
-
-        {/* Product Info */}
-        <div className="lg:w-1/2 p-10 flex flex-col justify-between space-y-6">
+       </div>
+      
+          {/* <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black opacity-20 transition-opacity duration-700"></div> */}
+        {/* </div> */}
+        <div className='w-[50%]'>
+        <div className="p-10 flex flex-col justify-between space-y-6">
           <h2 className="text-4xl font-extrabold bg-accent bg-clip-text text-transparent">
             {productName}
           </h2>
@@ -99,7 +108,7 @@ const ProductDetails = () => {
 
           <button
             onClick={() => setShowModal(true)}
-            className="bg-secondary text-white font-bold py-3 px-6 rounded-xl hover:scale-105 hover:shadow-xl transition-transform duration-500 ease-in-out"
+            className="bg-secondary border-white text-white font-bold py-3 px-6 rounded-xl hover:scale-105 hover:shadow-xl transition-transform duration-500 ease-in-out"
           >
             Import Now
           </button>
@@ -112,7 +121,10 @@ const ProductDetails = () => {
             />
           )}
         </div>
-      </div>
+        </div>
+        {/* Product Info */}
+     {/* </div>  */}
+    </div>
     </div>
   );
 };

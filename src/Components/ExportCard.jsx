@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { FaHeart } from 'react-icons/fa';
 import { FiShoppingCart } from 'react-icons/fi';
-import RatingStars from '../Pages/RatingStars';
 import { Link } from 'react-router';
 import Swal from 'sweetalert2';
 import UpdateExport from './UpdateExport';
+import RatingStars from '../Pages/RatingStars';
 
 const ExportCard = ({products, setProducts}) => {
      const [showModal, setShowModal] = useState(false);

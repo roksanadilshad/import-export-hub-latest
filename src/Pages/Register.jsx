@@ -92,7 +92,7 @@ const navigate = useNavigate();
    
     return (
       <div>
-       <div><title>WarmPaws Register</title></div>
+       <div><title> Register</title></div>
         <div className="hero base-200 min-h-screen">
   <div className="hero-content flex-col">
     <div className="text-center">

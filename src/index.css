@@ -1,8 +1,13 @@
-@import "tailwindcss";
-@plugin "daisyui";
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import "tailwindcss";
+@plugin "daisyui"{
+  themes: light --default, dark --prefersdark;
+}
 
-@plugin "daisyui/theme" {
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+;
+
+/* @plugin "daisyui/theme" {
   name: "light";
   default: true;
   --color-primary: #EFECE3;
@@ -10,11 +15,31 @@
   --color-accent: #000000;
   --color-neutral: #8FABD4;
 
+} */
+
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+
+   --color-primary: #EFECE3;
+  --color-secondary: #4A70A9;
+  --color-accent: #000000;
+  --color-neutral: #8FABD4;
 }
+
+@plugin "daisyui/theme" {
+  name: "dark";
+
+  --color-primary: #000B58 ; 
+  --color-secondary: #003161; 
+  --color-accent: #FFF4B7;   
+  --color-neutral: #006A67;   
+}
+
 body{
-    background: #EFECE3;
+   
      font-family: "Poppins", sans-serif
 }
 .active{
-  background-color: #4A70A9;
+  border-bottom: 1px solid #4A70A9;
 }

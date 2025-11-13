@@ -38,6 +38,10 @@ const AddExport = () => {
   
    
     return (
+      <div>
+        <div>
+         <title>Add Export</title>
+        </div>
           <div className="card border border-gray-200 bg-base-100 w-full max-w-md mx-auto shadow-2xl rounded-2xl">
       <div className="card-body p-6 relative">
         <h2 className="text-2xl font-bold text-center mb-6">Add New Product</h2>
@@ -115,6 +119,7 @@ const AddExport = () => {
         </form>
       </div>
     </div>
+      </div>
     );
 };
 

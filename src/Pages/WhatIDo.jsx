@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaFacebook, FaGoogle, FaShip, FaShoppingBag } from 'react-icons/fa';
 import { FaCartShopping } from 'react-icons/fa6';
-import { IoCarSharp } from 'react-icons/io5';
+
 import { RiImportLine } from 'react-icons/ri';
 
 
@@ -16,11 +16,11 @@ const WhatIDo = () => {
            <h2 className='border-neutral  border-b-4 w-60 mx-auto  font-bold text-4xl text-center text-primary '>WHAT I DO</h2>
         </div>
 
-           <div className='w-11/12 mx-auto grid grid-cols-2 gap-20'>
+           <div className='w-11/12 mx-auto grid lg:grid-cols-2 grid-cols-1 gap-20'>
             <div className='p-4'>
                 <h3 className='text-2xl font-bold text-primary pb-4'>IMPORT</h3>
                 <div className='flex justify-between gap-6'>
-                <p className='font-semibold text-neutral'>Our Import section lets you explore products from trusted global suppliers with verified credentials. Whether you’re sourcing raw materials, finished goods, or niche items, you can easily compare prices, check supplier ratings, and place secure import orders. Track your shipments in real time and build long-term partnerships with international manufacturers — all from one dashboard.</p>
+                <p className='font-semibold text-neutral'>Our Import section lets you explore products from trusted global suppliers with verified credentials. Whether you're sourcing raw materials, finished goods, or niche items, you can easily compare prices, check supplier ratings, and place secure import orders. Track your shipments in real time and build long-term partnerships with international manufacturers — all from one dashboard.</p>
                 <RiImportLine className='text-primary text-5xl w-[70%]'></RiImportLine>
                 </div>
             </div>
@@ -43,7 +43,7 @@ const WhatIDo = () => {
                 <h3 className='text-2xl font-bold text-primary pb-4 pl-12'>SALES</h3>
                 <div className='flex justify-between gap-6'>
                     <FaShoppingBag className='text-primary text-5xl w-[60%]'></FaShoppingBag>
-                <p className='font-semibold text-neutral'>In the Sales section, you can manage and monitor every aspect of your selling activity. Add new listings, track performance, respond to buyer inquiries, and view analytics to understand what’s driving your sales. Whether you’re selling locally or internationally, our platform ensures your products reach the right audience with maximum visibility and minimal effort.</p>
+                <p className='font-semibold text-neutral'>In the Sales section, you can manage and monitor every aspect of your selling activity. Add new listings, track performance, respond to buyer inquiries, and view analytics to understand what's driving your sales. Whether you're selling locally or internationally, our platform ensures your products reach the right audience with maximum visibility and minimal effort.</p>
                 
                 </div>
             </div>

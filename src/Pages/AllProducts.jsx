@@ -16,7 +16,7 @@ const AllProducts = () => {
     console.log(search_text)
     setLoading(true)
 
-    fetch(`https://3d-model-server.vercel.app/search?search=${search_text}`)
+    fetch(`http://localhost:3000/search?search=${search_text}`)
     .then(res=> res.json())
     .then(data=> {
       //console.log(data)
@@ -26,6 +26,10 @@ const AllProducts = () => {
   }
     return (
         <div>
+          <div>
+
+          <title >All Product</title>
+          </div>
            <div className='py-10'>
 
            <h2 className='border-b-4 border-secondary w-100 mx-auto  font-bold text-4xl text-center text-accent '>ALL PRODUCTS</h2>
