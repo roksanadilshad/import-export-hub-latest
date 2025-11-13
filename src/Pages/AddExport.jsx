@@ -1,42 +1,37 @@
 import React, { use } from 'react';
 import { AuthContext } from '../Context/AuthContext';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router';
 
 const AddExport = () => {
-
   const {user} = use(AuthContext)
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) =>{
+  const handleSubmit = async(e) =>{
     e.preventDefault();
 
     const formData = {
-     productName: e.target.productName.value,
       productImage: e.target.productImage.value,
-      price: e.target.price.value,
-      name: e.target.name.value,
+      productName: e.target.productName.value,
+      price:  parseFloat(e.target.price.value),
       originCountry: e.target.originCountry.value,
-      availableQuantity: e.target.availableQuantity.value,
-      rating: e.target.rating.value,
-      created_at: new Date(),
+      rating: parseFloat(e.target.rating.value),
+      availableQuantity: parseInt(e.target.availableQuantity.value, 10),
+      createdAt: new Date(),
       exporterEmail: user.email
 
     }
-    fetch('http://localhost:3000/products', {
+    const res = await fetch('http://localhost:3000/products', {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData)
-    })
-    .then(res => res.json())
-    .then(data=> {
-      toast.success("Successfully added!")
-      console.log(data)
-    })
-    .catch(err => {
-      console.log(err)
-    })
-   
+    });
+    const data = await res.json();
+    if (data.success) {
+      toast.success("Successfully added!");
+      navigate('/'); // or wherever your home/latest-products route is
+    }
+
 
   }
 
@@ -93,7 +88,7 @@ const AddExport = () => {
           <div>
             <label className="label font-medium">Available Quantity</label>
             <input
-              type="text"
+              type='text'
               name="availableQuantity"
               required
               className="input w-full rounded-full focus:border-0 focus:outline-gray-200"

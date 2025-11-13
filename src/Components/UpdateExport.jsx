@@ -26,8 +26,12 @@ const UpdateExport = ({ product, onClose, setProducts }) => {
       })
       .then((res) => res.json())
       .then((data) => {
-  console.log(data);
-  toast.success("Successfully updated!");
+        
+  //console.log(data)
+  if (data.success) {
+     toast.success("Successfully updated!");
+      navigate('/'); // or wherever your home/latest-products route is
+    }
 
   // Update local product list without refetching
   setProducts((prev) =>
@@ -35,7 +39,6 @@ const UpdateExport = ({ product, onClose, setProducts }) => {
   );
 
   onClose();
-  navigate('/my-exports') // Close modal after success
 });
   };
 

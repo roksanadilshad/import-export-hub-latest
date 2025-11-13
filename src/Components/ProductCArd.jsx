@@ -47,7 +47,7 @@ const ProductCard = ({products}) => {
         
         </span>
     
-    <div className="card-actions justify-end mb-4">
+    <div className="card-actions justify-end mb-4 mx-2">
       <Link to={`/productDetails/${_id}`} className="btn border-white btn-secondary w-full">See Details</Link>
     </div>
   </div>
