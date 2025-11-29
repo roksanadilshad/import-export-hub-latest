@@ -119,7 +119,7 @@ const ProductDetails = () => {
             />
           )}
 
-          <h2 className='border-b-4 border-secondary w-100 mx-auto  font-bold text-4xl text-center text-accent py-5'>LATEST PRODUCTS</h2>
+          <h2 className='border-b-4 border-secondary lg:w-100 w-80 mx-auto  font-bold lg:text-4xl text-2xl text-center text-accent py-5'>LATEST PRODUCTS</h2>
            <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4  py-5 lg:py-10'>
             {
               showProducts.map(products => <ProductCard products={products} key={products._id}></ProductCard> )

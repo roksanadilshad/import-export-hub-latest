@@ -75,7 +75,7 @@ const Header = () => {
         <button onClick={handleSignout} className='btn border-white btn-secondary text-white  mr-1 '>Log Out</button></div>
         </>) : (<>
          <NavLink className='btn border-white btn-secondary text-white  mr-1 ' to='/register'>Register</NavLink>
-       <NavLink className='btn border-white btn-secondary text-white px-1   mr-1 ' to='/login'><FaLock></FaLock>Login</NavLink>
+       <NavLink className='btn border-white btn-secondary text-white mr-1 ' to='/login'><FaLock></FaLock>Login</NavLink>
         </>)
 
     }

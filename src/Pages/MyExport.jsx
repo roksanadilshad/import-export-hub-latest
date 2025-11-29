@@ -37,7 +37,7 @@ const MyExport = () => {
 
             <title>My Export</title>
             </div>
-            <h2 className='border-b-4 border-secondary w-120 mx-auto  font-bold text-4xl text-center text-accent my-10'>MY EXPORT PRODUCTS</h2>
+            <h2 className='border-b-4 border-secondary lg:w-120 w-100 mx-auto  font-bold lg:text-4xl text-2xl text-center text-accent my-10'>MY EXPORT PRODUCTS</h2>
            <div className='w-11/12 mx-auto grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 py-10 h-screen'>
             { loading ? (<Skleton count={products.length}></Skleton>) :
            ( products.map(products => <ExportCard key={products._id} setProducts={setproducts} products={products}></ExportCard>))
