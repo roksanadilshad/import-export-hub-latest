@@ -63,7 +63,7 @@ const ProductDetails = () => {
   }
 
   if (loading || !product?._id) {
-  return <ErrorPage></ErrorPage>;
+  return <Loading></Loading>;
 }
 
   return (
