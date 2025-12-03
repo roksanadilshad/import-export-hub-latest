@@ -101,7 +101,7 @@ const Home = () => {
     <section>
         <div className='lg:py-20 py-10'>
 
-           <h2 className='border-b-4 border-secondary w-100 mx-auto  font-bold lg:text-4xl text-2xl text-center text-accent '>LATEST PRODUCTS</h2>
+           <h2 className='border-b-4 border-secondary lg:w-100 w-70 mx-auto  font-bold lg:text-4xl text-2xl text-center text-accent '>LATEST PRODUCTS</h2>
         </div>
         <div className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 w-11/12 mx-auto lg:pb-20'>
            {
