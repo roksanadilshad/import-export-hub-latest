@@ -14,6 +14,8 @@ const Profile = () => {
             displayName: user?.displayName
         }
     });
+    console.log(user);
+    
 
     // Handle Image Selection & Preview
     const handleImageChange = (e) => {
@@ -96,7 +98,7 @@ const Profile = () => {
             {/* Form */}
             <form onSubmit={handleSubmit(onSubmit)} className="mt-32 grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-[var(--color-accent)]/10 pt-12">
                 <div className="space-y-6">
-                    <h3 className="text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] opacity-50">Update Credentials</h3>
+                    {/* <h3 className="text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] opacity-50">Update Credentials</h3> */}
                     
                     {/* Display Name */}
                     <div>

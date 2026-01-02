@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../Context/AuthContext';
 import { FaGlobe, FaBars, FaUserCircle, FaSignOutAlt, FaThLarge } from 'react-icons/fa';
+import Logo from './Logo';
 
 const Header = () => {
   const { user, signOutUser, loading } = useContext(AuthContext);
@@ -61,15 +62,8 @@ const Header = () => {
               {links}
             </ul>
           </div>
-
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="p-2 bg-[var(--color-secondary)] group-hover:rotate-12 transition-transform duration-300 shadow-lg">
-              <FaGlobe className="text-white text-xl" />
-            </div>
-            <h3 className="text-lg lg:text-2xl font-black tracking-tighter text-[var(--color-accent)] uppercase">
-              HUB<span className="text-[var(--color-secondary)]">.</span>
-            </h3>
-          </Link>
+{/* logo */}
+          <Logo/>
         </div>
 
         <div className="hidden lg:flex">

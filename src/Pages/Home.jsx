@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from 'react';
+import React, { use, useEffect } from 'react';
 import { CiFacebook, CiLinkedin } from 'react-icons/ci';
 import { FaCartShopping, FaShip, FaXTwitter, FaEarthAmericas, FaBoxesStacked, FaHandshakeSimple, FaMagnifyingGlass } from 'react-icons/fa6';
 import { IoIosArrowForward } from 'react-icons/io';
@@ -15,11 +15,10 @@ import 'aos/dist/aos.css';
 const Home = () => {
     const { loading } = use(AuthContext);
     const products = useLoaderData();
-    const [popularProducts, setPopularProducts] = useState([]);
     const latestProducts = products?.slice(0, 6) || [];
     const tickerText = "USD/EUR 0.92 ▲ • CN/USD 7.19 ▼ • OIL $78.40 ▲ • 2,400+ NEW CONTAINERS DEPARTED TODAY • VERIFIED PARTNERS: 12,402 • ";
     useEffect(() => {
-        AOS.init({ duration: 800, once: false }); // once: false allows re-animation on scroll up
+        AOS.init({ duration: 800, once: false }); 
     }, []);
 
     return (
@@ -27,7 +26,7 @@ const Home = () => {
             <title>Import Export Hub | Global Trade Logistics</title>
 
             {/* --- HERO SECTION WITH GLASS TRACKING BAR --- */}
-            <div className="relative py-20 min-h-[70%] px-20 lg:px-40 flex items-center bg-[url('https://images.pexels.com/photos/2226458/pexels-photo-2226458.jpeg')] bg-cover bg-center bg-fixed">
+            <div className="relative pt-40 py-20 min-h-[70%] px-20 lg:px-40 flex items-center bg-[url('https://images.pexels.com/photos/2226458/pexels-photo-2226458.jpeg')] bg-cover bg-center bg-fixed">
                 <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-transparent"></div>
                 
                 <div className='relative z-10 w-11/12 mx-auto'>

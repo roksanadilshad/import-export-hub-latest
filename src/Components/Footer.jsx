@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router';
 import { FaFacebookF, FaTwitter, FaYoutube, FaLinkedinIn, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaGlobe } from 'react-icons/fa6';
 
 const Footer = () => {
   return (
@@ -12,7 +13,10 @@ const Footer = () => {
           <div className="space-y-6">
             <Link to="/" className="flex items-center gap-2 group">
               <div className="p-2 bg-[var(--color-secondary)] group-hover:rotate-12 transition-transform duration-300 shadow-lg">
-                <img src="https://i.ibb.co.com/QvWc04mY/t-removebg-preview.png" alt="Logo" className="w-8 h-8 object-contain brightness-0 invert" />
+                
+                              <FaGlobe className="text-white text-xl" />
+                            
+                {/* <img src="https://i.ibb.co.com/QvWc04mY/t-removebg-preview.png" alt="Logo" className="w-8 h-8 object-contain brightness-0 invert" /> */}
               </div>
               <h3 className="text-xl font-black tracking-tighter uppercase">
                 HUB<span className="text-[var(--color-secondary)]">.</span>
@@ -22,9 +26,9 @@ const Footer = () => {
               The premier global trade terminal for verifiable export assets and industrial procurement.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="p-2 border border-[var(--color-primary)]/10 hover:bg-[var(--color-secondary)] hover:border-transparent transition-all"><FaFacebookF size={14}/></a>
-              <a href="#" className="p-2 border border-[var(--color-primary)]/10 hover:bg-[var(--color-secondary)] hover:border-transparent transition-all"><FaTwitter size={14}/></a>
-              <a href="#" className="p-2 border border-[var(--color-primary)]/10 hover:bg-[var(--color-secondary)] hover:border-transparent transition-all"><FaLinkedinIn size={14}/></a>
+              <a href="https://www.facebook.com/roksana.dilshad" className="p-2 border border-[var(--color-primary)]/10 hover:bg-[var(--color-secondary)] hover:border-transparent transition-all"><FaFacebookF size={14}/></a>
+              <a href="https://x.com/DilshadRok91965" className="p-2 border border-[var(--color-primary)]/10 hover:bg-[var(--color-secondary)] hover:border-transparent transition-all"><FaTwitter size={14}/></a>
+              <a href="https://www.linkedin.com/in/roksana-dilshad/" className="p-2 border border-[var(--color-primary)]/10 hover:bg-[var(--color-secondary)] hover:border-transparent transition-all"><FaLinkedinIn size={14}/></a>
             </div>
           </div>
 

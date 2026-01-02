@@ -100,7 +100,7 @@ const Registration = () => {
               <input 
                 {...register("name", { required: "Name is required", minLength: 5 })}
                 type="text" 
-                placeholder="John Doe" 
+                placeholder="Your Name" 
                 className="w-full bg-[var(--color-accent)]/5 border-2 border-transparent p-3 text-sm font-bold text-[var(--color-accent)] focus:border-[var(--color-secondary)] outline-none" 
               />
               {errors.name && <p className="text-[9px] text-red-500 font-bold uppercase">{errors.name.message}</p>}
