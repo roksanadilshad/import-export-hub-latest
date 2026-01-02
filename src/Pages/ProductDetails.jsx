@@ -52,11 +52,11 @@ const ProductDetails = () => {
         setLoading(false);
       });
 
-    // Latest products usually don't need auth
+    // Popular products usually don't need auth
     fetch(`https://import-export-server.vercel.app/popular-products`)
       .then(res => res.json())
       .then(data => setLatestProducts(data));
-  }, [id, setLoading, user?.accessToken]); // Add accessToken to dependencies
+  }, [id, setLoading, user?.accessToken]); 
   const handleImported = (quantity) => {
     setProduct((prev) => ({
       ...prev,

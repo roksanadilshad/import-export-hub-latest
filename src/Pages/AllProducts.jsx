@@ -12,9 +12,14 @@ const AllProducts = () => {
     const [category, setCategory] = useState("All");
     const { loading, setLoading } = use(AuthContext);
 
+    const [minPrice, setMinPrice] = useState(0);
+    const [maxPrice, setMaxPrice] = useState(100000); // Set a high default
+    const [minRating, setMinRating] = useState(0);
+    const [sortOrder, setSortOrder] = useState("newest"); // price-asc, price-desc, newest
+    
     const categories = ["All", "Industrial", "Consumer", "Technology", "Logistics", "Raw Materials"];
 
-    console.log(products);
+    //console.log(products);
     
 
     // SAFE PAGINATION CALCULATION
@@ -24,11 +29,12 @@ const AllProducts = () => {
 
     useEffect(() => {
         setLoading(true);
-        // Using category filter in URL
-        fetch(`https://import-export-server.vercel.app/products?page=${currentPage}&size=${itemsPerPage}&category=${category}`)
+        // Added price, rating, and sort to the fetch URL
+        const url = `https://import-export-server.vercel.app/products?page=${currentPage}&size=${itemsPerPage}&category=${category}&minPrice=${minPrice}&maxPrice=${maxPrice}&minRating=${minRating}&sort=${sortOrder}`;
+        
+        fetch(url)
             .then(res => res.json())
             .then(data => {
-                // Ensure we handle data structure from backend: { count, result }
                 setProducts(data.result || []);
                 setCount(data.count || 0);
                 setLoading(false);
@@ -37,8 +43,7 @@ const AllProducts = () => {
                 console.error(err);
                 setLoading(false);
             });
-    }, [currentPage, category, itemsPerPage, setLoading]);
-
+    }, [currentPage, category, itemsPerPage, minPrice, maxPrice, minRating, sortOrder, setLoading]);
     const handleCategoryChange = (cat) => {
         setCategory(cat);
         setCurrentPage(0); // Reset to first page when changing category
@@ -91,7 +96,26 @@ const AllProducts = () => {
 
                 <div className="flex flex-col lg:flex-row gap-10">
                     {/* --- SIDEBAR --- */}
+                    
+                        {/* Sort Order */}
+                        
+                    
                     <aside className="lg:w-64 space-y-8">
+                        <div>
+                            <h3 className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] mb-4">
+                                <FiSliders className="text-[var(--color-secondary)]" /> Sort Configuration
+                            </h3>
+                            <select 
+                                onChange={(e) => setSortOrder(e.target.value)}
+                                className="w-full bg-[var(--color-accent)]/5 border-2 border-transparent p-3 text-[10px] font-bold uppercase focus:border-[var(--color-secondary)] outline-none"
+                            >
+                                <option value="newest">Latest Shipment</option>
+                                <option value="price-asc">Price: Low to High</option>
+                                <option value="price-desc">Price: High to Low</option>
+                                <option value="rating">Top Rated</option>
+                            </select>
+                        </div>
+                        
                         <div>
                             <h3 className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-accent)] mb-6">
                                 <FiFilter className="text-[var(--color-secondary)]" /> Trade Categories
@@ -112,7 +136,37 @@ const AllProducts = () => {
                                 ))}
                             </div>
                         </div>
+                        {/* Price Range Filter */}
+                        <div className="space-y-4">
+                            <h3 className="text-[10px] font-black uppercase tracking-[0.2em]">Price Valuation ($)</h3>
+                            <div className="grid grid-cols-2 gap-2">
+                                <input 
+                                    type="number" placeholder="Min" 
+                                    onChange={(e) => setMinPrice(e.target.value || 0)}
+                                    className="w-full bg-[var(--color-accent)]/5 border p-2 text-[10px] outline-none" 
+                                />
+                                <input 
+                                    type="number" placeholder="Max" 
+                                    onChange={(e) => setMaxPrice(e.target.value || 100000)}
+                                    className="w-full bg-[var(--color-accent)]/5 border p-2 text-[10px] outline-none" 
+                                />
+                            </div>
+                        </div>
+
+                        {/* Minimum Rating Filter */}
+                        <div>
+                            <h3 className="text-[10px] font-black uppercase tracking-[0.2em] mb-2">Min Trust Rating</h3>
+                            <input 
+                                type="range" min="0" max="5" step="0.5" 
+                                value={minRating}
+                                onChange={(e) => setMinRating(e.target.value)}
+                                className="w-full accent-[var(--color-secondary)]"
+                            />
+                            <p className="text-[9px] font-bold opacity-50 mt-1">{minRating}+ Rating</p>
+                        </div>
+                    
                     </aside>
+                    
 
                     {/* --- MAIN GRID --- */}
                     <main className="flex-1">

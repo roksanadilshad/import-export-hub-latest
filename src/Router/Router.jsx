@@ -14,6 +14,9 @@ import UpdateExport from '../Components/UpdateExport';
 import ErrorPage from '../Pages/ErrorPage';
 import About from '../Pages/About';
 import Contact from '../Pages/Contact';
+import Dashboard from '../Layouts/Dashboard';
+import DashboardHome from '../Pages/Dashboard.jsx/DashboardHome';
+import Profile from '../Pages/Dashboard.jsx/Profile';
 
 export const router = createBrowserRouter([
   {
@@ -51,34 +54,51 @@ export const router = createBrowserRouter([
           path:'/productDetails/:id' ,
          element:<ProductDetails></ProductDetails>
         },
-        
-        {
-          path:'/myImports' ,
-         element:<PrivateRoute><MyImports></MyImports></PrivateRoute>
-        },
-        {
-          path:'/imported-products/:id' ,
-         element:<PrivateRoute><ProductDetails></ProductDetails></PrivateRoute>
-        },
-        {
-          path:'/addExport' ,
-         element:<PrivateRoute><AddExport></AddExport></PrivateRoute>
-        },
-        {
-          path:'/my-exports' ,
-         element:<PrivateRoute><MyExport></MyExport></PrivateRoute>
-        },
+
        
-        {
-          path:'/updateExport/:id' ,
-         element:<PrivateRoute><UpdateExport></UpdateExport></PrivateRoute>,
-        },
         {
           path:'/*',
           element:<ErrorPage></ErrorPage>
         }
        
        
+    ],
+  },
+     {
+    path: "dashboard",
+    element: <PrivateRoute><Dashboard/></PrivateRoute>,
+    children: [
+      {
+          path:'myImports' ,
+         element:<MyImports></MyImports>
+        },
+        {
+          path:'imported-products/:id' ,
+         element:<ProductDetails></ProductDetails>
+        },
+        {
+          path:'addExport' ,
+         element:<AddExport></AddExport>
+        },
+        {
+          path:'my-exports' ,
+         element:<MyExport></MyExport>
+        },
+       
+        {
+          path:'dashboardHome' ,
+         element:<DashboardHome/>,
+        },
+        {
+          path:'profile' ,
+         element:<Profile/>,
+        },
+        {
+          path:'updateExport/:id' ,
+         element:<UpdateExport></UpdateExport>,
+        },
+     
     ]
+
   },
 ]);
