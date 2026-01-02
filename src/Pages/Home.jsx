@@ -26,7 +26,7 @@ const Home = () => {
             <title>Import Export Hub | Global Trade Logistics</title>
 
             {/* --- HERO SECTION WITH GLASS TRACKING BAR --- */}
-            <div className="relative pt-40 py-20 min-h-[70%] px-20 lg:px-40 flex items-center bg-[url('https://images.pexels.com/photos/2226458/pexels-photo-2226458.jpeg')] bg-cover bg-center bg-fixed">
+            <div className="relative lg:pt-40 pt-20 py-20 min-h-[70%] md:px-20 px-2 lg:px-40 flex items-center bg-[url('https://images.pexels.com/photos/2226458/pexels-photo-2226458.jpeg')] bg-cover bg-center bg-fixed">
                 <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-transparent"></div>
                 
                 <div className='relative z-10 w-11/12 mx-auto'>
@@ -45,13 +45,13 @@ const Home = () => {
 
                         {/* --- FLOATING TRACKING BAR --- */}
                         <div className="flex flex-col md:flex-row bg-white/10 backdrop-blur-xl p-2 rounded-none border border-white/20 shadow-2xl max-w-3xl">
-                            <div className="flex-1 flex items-center px-6 py-4 border-r border-white/10">
+                            {/* <div className="flex-1 flex items-center px-6 py-4 border-r border-white/10">
                                 <FaMagnifyingGlass className="text-accent mr-3" />
                                 <input type="text" placeholder="Track shipment or search products..." className="bg-transparent border-none outline-none text-white w-full placeholder:text-gray-400" />
-                            </div>
-                            <button className="bg-secondary hover:bg-white hover:text-secondary text-white font-bold px-10 py-4 transition-all duration-300">
-                                SEARCH
-                            </button>
+                            </div> */}
+                            <NavLink to={"/allProducts"} className="bg-secondary hover:bg-white hover:text-secondary text-white font-bold px-10 py-4 transition-all duration-300">
+                                Browse Inventory
+                            </NavLink>
                         </div>
                     </div>
                 </div>
@@ -75,7 +75,7 @@ const Home = () => {
     </div>
 
             {/* --- CORE SERVICES: BENTO GRID --- */}
-            <section className="py-32 px-20 lg:px-40 bg-[#F8F9FA] dark:bg-[#020617]">
+            <section className="py-32 md:px-20 px-2 lg:px-40 bg-[#F8F9FA] dark:bg-[#020617]">
                 <div className="w-11/12 mx-auto">
                     <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-6">
                         <div data-aos="fade-right">
@@ -100,7 +100,7 @@ const Home = () => {
                                 <FaShip className="text-8xl mb-6 text-accent animate-pulse" />
                                 <h3 className="text-3xl font-bold">EXPORT PRO</h3>
                                 <p className="mt-4 text-sm opacity-80">Launch your products into 190+ countries today.</p>
-                                <NavLink to={"/addExport"} className="mt-8 btn btn-outline btn-accent rounded-none">Start Exporting</NavLink>
+                                <NavLink to={"dashboard/addExport"} className="mt-8 btn btn-outline btn-accent rounded-none">Start Exporting</NavLink>
                             </div>
                         </div>
                     </div>
@@ -108,7 +108,7 @@ const Home = () => {
             </section>
 
             {/* --- SECTION: GLOBAL TRADE CORRIDORS --- */}
-<section className="py-24 px-30 lg:px-60 bg-white dark:bg-[#000421] overflow-hidden relative">
+<section className="py-24 md:px-30 px-6 lg:px-60 bg-white dark:bg-[#000421] overflow-hidden relative">
     {/* Subtle Background Text for Industrial Feel */}
     {/* <div className="absolute top-10 left-10 text-[15rem] font-black text-gray-500/5 select-none pointer-events-none uppercase">
         Network
@@ -182,7 +182,7 @@ const Home = () => {
 </section>
 
             {/* --- PRODUCT SHOWCASE --- */}
-            <section className="py-24 px-20 lg:px-40">
+            <section className="py-24 md:px-20 px-2 lg:px-40">
                 <div className='flex flex-col items-center mb-16' data-aos="zoom-in">
                     <h2 className='text-6xl font-black text-center tracking-tighter dark:text-white'>LATEST TRENDS</h2>
                     <div className="w-16 h-2 bg-accent mt-4"></div>
@@ -199,7 +199,7 @@ const Home = () => {
 
 <section className=" relative  bg-[url('https://images.pexels.com/photos/3063470/pexels-photo-3063470.jpeg')] bg-cover bg-center bg-no-repeat object-cover  text-white">
     <div className=" inset-0 bg-black/70">
-        <div className="py-24 w-11/12 mx-auto px-20 lg:px-40 grid lg:grid-cols-3 gap-12">
+        <div className="py-24 w-11/12 mx-auto md:px-20 px-2 lg:px-40 grid lg:grid-cols-3 gap-12">
             <div className="lg:col-span-1" data-aos="fade-up">
                 <h2 className="text-primary font-bold tracking-widest uppercase text-xs mb-4">Zero Risk Trade</h2>
                 <h3 className="text-4xl font-bold mb-6">Fully Compliant. <br/>Globally Certified.</h3>
@@ -267,7 +267,7 @@ const Home = () => {
 </section>
 
             {/* --- GLOBAL PARTNERS LOGO STRIP --- */}
-            <section className="py-12 px-20 lg:px-40 border-y border-gray-200 dark:border-white/10 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-700 overflow-hidden bg-white dark:bg-transparent">
+            <section className="py-12 md:px-20 px-2 lg:px-40 border-y border-gray-200 dark:border-white/10 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-700 overflow-hidden bg-white dark:bg-transparent">
   <div className="w-11/12 mx-auto flex flex-col lg:flex-row items-center gap-10">
     
     {/* Label stays static on the left for larger screens */}
@@ -309,7 +309,7 @@ const Home = () => {
 </section>
 
             {/* --- NEWSLETTER: MINIMALIST DARK --- */}
-            <section className="bg-black px-20 lg:px-40 py-32 text-white">
+            <section className="bg-black md:px-20 px-2 lg:px-40 py-32 text-white">
                 <div className="w-11/12 mx-auto grid lg:grid-cols-2 gap-20 items-center">
                     <div data-aos="fade-right">
                         <h2 className="text-5xl font-bold mb-6">Stay Ahead of the <br/>Market.</h2>

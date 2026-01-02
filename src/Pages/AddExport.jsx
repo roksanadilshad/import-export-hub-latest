@@ -134,7 +134,7 @@ const AddExport = () => {
               {errors.productImage && <span className="text-red-500 text-[9px] uppercase font-bold">{errors.productImage.message}</span>}
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid lg:grid-cols-2 gap-4">
               {/* Price */}
               <div>
                 <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] opacity-60">Price ($)</label>
@@ -156,7 +156,7 @@ const AddExport = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid lg:grid-cols-2 gap-4">
               {/* Origin */}
               <div>
                 <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] opacity-60">Origin</label>

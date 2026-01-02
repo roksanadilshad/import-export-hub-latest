@@ -36,10 +36,10 @@ const Footer = () => {
           <div>
             <h6 className="text-[10px] font-black uppercase tracking-[0.3em] mb-6 text-[var(--color-secondary)]">Logistics</h6>
             <ul className="space-y-4 text-[11px] font-bold uppercase tracking-widest opacity-80">
-              <li><Link to="/allProducts" className="hover:text-[var(--color-secondary)] transition-colors">Global Inventory</Link></li>
-              <li><Link to="/myImports" className="hover:text-[var(--color-secondary)] transition-colors">Import Manifest</Link></li>
-              <li><Link to="/my-exports" className="hover:text-[var(--color-secondary)] transition-colors">Export Portfolio</Link></li>
-              <li><Link to="/addExport" className="hover:text-[var(--color-secondary)] transition-colors">List Asset</Link></li>
+              <li><Link to="dashboard/allProducts" className="hover:text-[var(--color-secondary)] transition-colors">Global Inventory</Link></li>
+              <li><Link to="dashboard/myImports" className="hover:text-[var(--color-secondary)] transition-colors">Import Manifest</Link></li>
+              <li><Link to="dashboard/my-exports" className="hover:text-[var(--color-secondary)] transition-colors">Export Portfolio</Link></li>
+              <li><Link to="dashboard/addExport" className="hover:text-[var(--color-secondary)] transition-colors">List Asset</Link></li>
             </ul>
           </div>
 
