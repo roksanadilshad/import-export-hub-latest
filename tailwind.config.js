@@ -9,6 +9,6 @@ daisyui: {
         "base-100": "#ffffff",
       },
     },
-    "dark" // reuse the built-in dark or customize
+    "dark" 
   ],
-},
+}
