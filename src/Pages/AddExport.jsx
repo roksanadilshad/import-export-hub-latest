@@ -2,10 +2,9 @@ import React, { useContext, useState } from 'react';
 import { AuthContext } from '../Context/AuthContext';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router';
-import { useForm } from 'react-hook-form'; // 1. Import useForm
-import { FaCloudUploadAlt } from 'react-icons/fa';
+import { useForm } from 'react-hook-form';
+import { FaCloudUploadAlt, FaLayerGroup } from 'react-icons/fa';
 
-// ImgBB API Configuration
 const image_hosting_key = import.meta.env.VITE_IMGBB_API_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
@@ -14,13 +13,14 @@ const AddExport = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
-  // 2. Initialize React Hook Form
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
+
+  // Defined Industrial Categories
+  const categories = ["Industrial", "Consumer", "Technology", "Logistics", "Raw Materials"];
 
   if (authLoading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   if (!user) { navigate('/login'); return null; }
 
-  // 3. Handle Form Submission
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     const loadingToast = toast.loading("Processing image and manifest...");
@@ -39,10 +39,11 @@ const AddExport = () => {
 
       if (!imgData.success) throw new Error("Image upload failed");
 
-      // Step B: Prepare Final Data with ImgBB URL
+      // Step B: Prepare Final Data with Category
       const finalProductData = {
         productName: data.productName,
-        productImage: imgData.data.display_url, // URL from ImgBB
+        category: data.category, // Captured from new field
+        productImage: imgData.data.display_url,
         price: parseFloat(data.price),
         originCountry: data.originCountry,
         rating: parseFloat(data.rating),
@@ -64,9 +65,9 @@ const AddExport = () => {
 
       const backendData = await res.json();
       
-      if (backendData.success) {
+      if (backendData.success || res.status === 200) {
         toast.success("Product registered successfully!", { id: loadingToast });
-        reset(); // Clear form
+        reset();
         navigate('/allProducts');
       }
     } catch (err) {
@@ -77,7 +78,7 @@ const AddExport = () => {
   };
 
   return (
-    <div className="pt-24 pb-12 px-4">
+    <div className="pt-24 pb-12 px-4 bg-[var(--color-primary)] min-h-screen">
       <div className="card border border-[var(--color-accent)]/10 bg-[var(--color-primary)] w-full max-w-xl mx-auto shadow-2xl rounded-none">
         <div className="card-body p-8">
           <h2 className='border-b-2 border-[var(--color-secondary)] font-black text-2xl text-center text-[var(--color-accent)] mb-8 uppercase'>
@@ -85,15 +86,38 @@ const AddExport = () => {
           </h2>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            {/* Product Name */}
-            <div>
-              <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] opacity-60">Product Name</label>
-              <input
-                {...register("productName", { required: "Name is required" })}
-                className="w-full bg-[var(--color-accent)]/5 border-2 border-transparent p-3 text-sm focus:border-[var(--color-secondary)] outline-none"
-                placeholder="Industrial Name"
-              />
-              {errors.productName && <span className="text-red-500 text-[9px] uppercase font-bold">{errors.productName.message}</span>}
+            
+            {/* PRODUCT NAME & CATEGORY GRID */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Product Name */}
+                <div>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] opacity-60">Product Name</label>
+                  <input
+                    {...register("productName", { required: "Name is required" })}
+                    className="w-full bg-[var(--color-accent)]/5 border-2 border-transparent p-3 text-sm focus:border-[var(--color-secondary)] outline-none text-[var(--color-accent)]"
+                    placeholder="Industrial Name"
+                  />
+                  {errors.productName && <span className="text-red-500 text-[9px] uppercase font-bold">{errors.productName.message}</span>}
+                </div>
+
+                {/* Category Selection */}
+                <div>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] opacity-60 flex items-center gap-1">
+                    <FaLayerGroup className="text-[var(--color-secondary)]" /> Trade Category
+                  </label>
+                  <select
+                    {...register("category", { required: "Category is required" })}
+                    className="w-full bg-[var(--color-accent)]/5 border-2 border-transparent p-3 text-sm focus:border-[var(--color-secondary)] outline-none text-[var(--color-accent)] appearance-none cursor-pointer"
+                  >
+                    <option value="" className="bg-[var(--color-primary)]">Select Sector</option>
+                    {categories.map((cat) => (
+                      <option key={cat} value={cat} className="bg-[var(--color-primary)]">
+                        {cat}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.category && <span className="text-red-500 text-[9px] uppercase font-bold">{errors.category.message}</span>}
+                </div>
             </div>
 
             {/* Image Upload Field */}
@@ -104,7 +128,7 @@ const AddExport = () => {
                   type="file"
                   accept="image/*"
                   {...register("productImage", { required: "Image is required" })}
-                  className="w-full text-xs cursor-pointer"
+                  className="w-full text-xs cursor-pointer text-[var(--color-accent)]"
                 />
               </div>
               {errors.productImage && <span className="text-red-500 text-[9px] uppercase font-bold">{errors.productImage.message}</span>}
@@ -118,7 +142,7 @@ const AddExport = () => {
                   type="number"
                   step="0.01"
                   {...register("price", { required: "Price required" })}
-                  className="w-full bg-[var(--color-accent)]/5 border-2 border-transparent p-3 text-sm focus:border-[var(--color-secondary)] outline-none"
+                  className="w-full bg-[var(--color-accent)]/5 border-2 border-transparent p-3 text-sm focus:border-[var(--color-secondary)] outline-none text-[var(--color-accent)]"
                 />
               </div>
               {/* Stock */}
@@ -127,7 +151,7 @@ const AddExport = () => {
                 <input
                   type="number"
                   {...register("availableQuantity", { required: "Quantity required" })}
-                  className="w-full bg-[var(--color-accent)]/5 border-2 border-transparent p-3 text-sm focus:border-[var(--color-secondary)] outline-none"
+                  className="w-full bg-[var(--color-accent)]/5 border-2 border-transparent p-3 text-sm focus:border-[var(--color-secondary)] outline-none text-[var(--color-accent)]"
                 />
               </div>
             </div>
@@ -138,7 +162,7 @@ const AddExport = () => {
                 <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] opacity-60">Origin</label>
                 <input
                   {...register("originCountry", { required: "Origin required" })}
-                  className="w-full bg-[var(--color-accent)]/5 border-2 border-transparent p-3 text-sm focus:border-[var(--color-secondary)] outline-none"
+                  className="w-full bg-[var(--color-accent)]/5 border-2 border-transparent p-3 text-sm focus:border-[var(--color-secondary)] outline-none text-[var(--color-accent)]"
                 />
               </div>
               {/* Rating */}
@@ -148,7 +172,7 @@ const AddExport = () => {
                   type="number"
                   step="0.1"
                   {...register("rating", { required: "Rating required", min: 0, max: 5 })}
-                  className="w-full bg-[var(--color-accent)]/5 border-2 border-transparent p-3 text-sm focus:border-[var(--color-secondary)] outline-none"
+                  className="w-full bg-[var(--color-accent)]/5 border-2 border-transparent p-3 text-sm focus:border-[var(--color-secondary)] outline-none text-[var(--color-accent)]"
                 />
               </div>
             </div>
@@ -156,9 +180,11 @@ const AddExport = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-4 bg-[var(--color-accent)] text-[var(--color-primary)] font-black text-xs tracking-[0.3em] uppercase hover:bg-[var(--color-secondary)] transition-all disabled:opacity-50"
+              className="group relative w-full py-4 bg-[var(--color-accent)] text-[var(--color-primary)] font-black text-xs tracking-[0.3em] uppercase overflow-hidden transition-all hover:bg-[var(--color-secondary)] disabled:opacity-50"
             >
-              {isSubmitting ? "Uploading Data..." : "Execute Export Addition"}
+              <span className="relative z-10">
+                {isSubmitting ? "Uploading Data..." : "Execute Export Addition"}
+              </span>
             </button>
           </form>
         </div>

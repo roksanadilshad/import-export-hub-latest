@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../Context/AuthContext';
 import Loading from './Loading';
-import { useParams } from 'react-router';
+import { useParams, useNavigate, useLocation } from 'react-router';
 import RatingStars from './RatingStars';
 import ImportModal from './ImportModal';
 import ProductCard from '../Components/ProductCArd';
@@ -12,35 +12,66 @@ import {
 
 const ProductDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [product, setProduct] = useState(null);
   const { user, loading, setLoading } = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
   const [latestProducts, setLatestProducts] = useState([]);
 
   useEffect(() => {
-    if (!user?.accessToken) return;
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    fetch(`https://import-export-server.vercel.app/products/${id}`, {
-      headers: { authorization: `Bearer ${user.accessToken}` },
-    })
-      .then((res) => res.json())
+    // Build the request options
+    const requestOptions = {};
+    
+    // Only add headers if the user is logged in
+    if (user?.accessToken) {
+      requestOptions.headers = {
+        authorization: `Bearer ${user.accessToken}`
+      };
+    }
+
+    // Fetch primary product details
+    fetch(`https://import-export-server.vercel.app/products/${id}`, requestOptions)
+      .then((res) => {
+        // Handle the 401 explicitly if the server still rejects it
+        if (res.status === 401 && !user) {
+          console.warn("Server requires login for this detail. Check backend middleware.");
+        }
+        return res.json();
+      })
       .then((data) => {
-        setProduct(data.result);
+        if (data.result) {
+          setProduct(data.result);
+        }
         setLoading(false);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error("Fetch Error:", err);
+        setLoading(false);
+      });
 
-    fetch(`https://import-export-server.vercel.app/latest-products`)
+    // Latest products usually don't need auth
+    fetch(`https://import-export-server.vercel.app/popular-products`)
       .then(res => res.json())
       .then(data => setLatestProducts(data));
-  }, [user, id, setLoading]);
-
+  }, [id, setLoading, user?.accessToken]); // Add accessToken to dependencies
   const handleImported = (quantity) => {
     setProduct((prev) => ({
       ...prev,
       availableQuantity: prev.availableQuantity - quantity,
     }));
+  };
+
+  const handleProcurementClick = () => {
+    if (user && user.email) {
+      // User is logged in, show the import modal
+      setShowModal(true);
+    } else {
+      // User is a guest, redirect to login and save current location
+      navigate('/login', { state: { from: location } });
+    }
   };
 
   if (loading || !product) return <Loading />;
@@ -50,9 +81,8 @@ const ProductDetails = () => {
 
   return (
     <div className="bg-[var(--color-primary)] min-h-screen pt-28 pb-20 transition-colors duration-500">
-      <title>{productName} | Strategic Procurement</title>
-
       <div className="container mx-auto px-4 lg:px-10">
+        
         {/* --- PROFESSIONAL BREADCRUMB --- */}
         <nav className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-accent)]/50 mb-8">
             Global Trade / Inventory / <span className="text-[var(--color-secondary)]">{productName}</span>
@@ -112,16 +142,22 @@ const ProductDetails = () => {
                 ))}
               </div>
 
-              {/* ACTION BUTTON - The "Maersk" Style CTA */}
+              {/* ACTION BUTTON - Restricted Logic */}
               <button
-                onClick={() => setShowModal(true)}
+                onClick={handleProcurementClick}
                 className="group relative w-full py-6 bg-[var(--color-accent)] dark:bg-[var(--color-secondary)] text-[var(--color-primary)] dark:text-white font-black text-xs tracking-[0.5em] uppercase overflow-hidden transition-all hover:shadow-[0_20px_40px_rgba(0,0,0,0.2)]"
               >
                 <span className="relative z-10 flex items-center justify-center gap-3">
-                  Initiate Procurement <FaCubes className="group-hover:rotate-12 transition-transform" />
+                  {user ? "Initiate Procurement" : "Login to Import"} <FaCubes className="group-hover:rotate-12 transition-transform" />
                 </span>
                 <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
               </button>
+              
+              {!user && (
+                <p className="mt-4 text-[10px] text-center text-[var(--color-secondary)] font-bold uppercase tracking-widest animate-pulse">
+                  Authentication required for trade execution
+                </p>
+              )}
               
               <p className="mt-6 text-[9px] text-center text-[var(--color-accent)]/40 uppercase font-bold tracking-[0.1em]">
                 Secure escrow payment enabled for this transaction
@@ -131,88 +167,66 @@ const ProductDetails = () => {
         </div>
 
         {/* --- SECTION: LOGISTICS & TECHNICAL MATRIX --- */}
-<section className="mt-20 border-t border-[var(--color-accent)]/10 pt-16">
-  <div className="grid lg:grid-cols-3 gap-12">
-    <div className="lg:col-span-1">
-      <h3 className="text-[var(--color-secondary)] font-black text-[10px] tracking-[0.4em] uppercase mb-4">Core Specifications</h3>
-      <h4 className="text-3xl font-black text-[var(--color-accent)] dark:text-white uppercase tracking-tighter leading-none mb-6">
-        Technical <br/> Parameters.
-      </h4>
-      <p className="text-sm text-[var(--color-accent)]/60 leading-relaxed">
-        Our quality assurance team verifies every batch before container sealing to ensure 100% compliance with international standards.
-      </p>
-    </div>
+        <section className="mt-20 border-t border-[var(--color-accent)]/10 pt-16">
+          <div className="grid lg:grid-cols-3 gap-12">
+            <div className="lg:col-span-1">
+              <h3 className="text-[var(--color-secondary)] font-black text-[10px] tracking-[0.4em] uppercase mb-4">Core Specifications</h3>
+              <h4 className="text-3xl font-black text-[var(--color-accent)] dark:text-white uppercase tracking-tighter leading-none mb-6">
+                Technical <br/> Parameters.
+              </h4>
+              <p className="text-sm text-[var(--color-accent)]/60 leading-relaxed">
+                Our quality assurance team verifies every batch before container sealing to ensure 100% compliance with international standards.
+              </p>
+            </div>
 
-    <div className="lg:col-span-2 grid md:grid-cols-2 gap-x-12 gap-y-4">
-      {[
-        { label: "Harmonized System (HS) Code", value: "8471.30.01" },
-        { label: "Standard Lead Time", value: "14-21 Business Days" },
-        { label: "Incoterms Supported", value: "FOB, CIF, DDP, EXW" },
-        { label: "Minimum Order Quantity", value: "50 Units" },
-        { label: "Storage Condition", value: "Ambient / Dry" },
-        { label: "Insurance Coverage", value: "All-Risk Protection" },
-      ].map((spec, i) => (
-        <div key={i} className="flex justify-between items-center py-4 border-b border-[var(--color-accent)]/5">
-          <span className="text-[10px] uppercase font-bold text-[var(--color-accent)]/40 tracking-widest">{spec.label}</span>
-          <span className="text-sm font-black text-[var(--color-accent)] dark:text-white font-mono">{spec.value}</span>
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
+            <div className="lg:col-span-2 grid md:grid-cols-2 gap-x-12 gap-y-4">
+              {[
+                { label: "Harmonized System (HS) Code", value: "8471.30.01" },
+                { label: "Standard Lead Time", value: "14-21 Business Days" },
+                { label: "Incoterms Supported", value: "FOB, CIF, DDP, EXW" },
+                { label: "Minimum Order Quantity", value: "50 Units" },
+                { label: "Storage Condition", value: "Ambient / Dry" },
+                { label: "Insurance Coverage", value: "All-Risk Protection" },
+              ].map((spec, i) => (
+                <div key={i} className="flex justify-between items-center py-4 border-b border-[var(--color-accent)]/5">
+                  <span className="text-[10px] uppercase font-bold text-[var(--color-accent)]/40 tracking-widest">{spec.label}</span>
+                  <span className="text-sm font-black text-[var(--color-accent)] dark:text-white font-mono">{spec.value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-{/* --- SECTION: PROCUREMENT JOURNEY --- */}
-<section className="mt-32 py-20 bg-[var(--color-accent)] dark:bg-[var(--color-secondary)]/10 text-[var(--color-primary)]">
-  <div className="max-w-4xl mx-auto text-center mb-16 px-6">
-    <h3 className="text-[10px] font-bold tracking-[0.5em] uppercase opacity-50 mb-4">Standard Operational Procedure</h3>
-    <h2 className="text-4xl font-black uppercase tracking-tighter">Your Supply Chain Timeline.</h2>
-  </div>
+        {/* --- SECTION: PROCUREMENT JOURNEY --- */}
+        
 
-  <div className="grid md:grid-cols-4 gap-8 px-10 relative">
-    {/* Connecting Line (Desktop) */}
-    <div className="absolute top-1/2 left-0 w-full h-[1px] bg-[var(--color-primary)]/10 hidden md:block"></div>
-    
-    {[
-      { step: "01", title: "Order Placement", desc: "Digital Bill of Lading generated" },
-      { step: "02", title: "Port Loading", desc: "Loading at Port of " + originCountry },
-      { step: "03", title: "Transit", desc: "Global vessel tracking enabled" },
-      { step: "04", title: "Arrival", desc: "Customs clearing & last-mile delivery" }
-    ].map((item, i) => (
-      <div key={i} className="relative z-10 flex flex-col items-center text-center">
-        <div className="w-12 h-12 bg-[var(--color-primary)] text-[var(--color-accent)] flex items-center justify-center font-black text-xl mb-6 shadow-xl">
-          {item.step}
-        </div>
-        <h4 className="font-bold uppercase tracking-widest text-sm mb-2">{item.title}</h4>
-        <p className="text-[10px] opacity-60 uppercase tracking-tighter leading-relaxed">{item.desc}</p>
-      </div>
-    ))}
-  </div>
-</section>
+[Image of a logistics supply chain flow diagram]
 
-{/* --- SECTION: COMPLIANCE & TRUST SIGNALS --- */}
-<section className="mt-32 mb-10">
-  <div className="flex flex-wrap items-center justify-center gap-12 opacity-30 grayscale hover:grayscale-0 transition-all duration-500">
-    <div className="flex flex-col items-center">
-       <FaCheckCircle className="text-4xl mb-2" />
-       <span className="text-[9px] font-black uppercase tracking-widest">ISO 9001:2015</span>
-    </div>
-    <div className="h-10 w-[1px] bg-[var(--color-accent)] hidden md:block"></div>
-    <div className="flex flex-col items-center text-center">
-       <span className="text-xl font-black italic">SGS</span>
-       <span className="text-[9px] font-black uppercase tracking-widest">Quality Inspected</span>
-    </div>
-    <div className="h-10 w-[1px] bg-[var(--color-accent)] hidden md:block"></div>
-    <div className="flex flex-col items-center">
-       <span className="text-xl font-black">WTO</span>
-       <span className="text-[9px] font-black uppercase tracking-widest">Trade Compliant</span>
-    </div>
-    <div className="h-10 w-[1px] bg-[var(--color-accent)] hidden md:block"></div>
-    <div className="flex flex-col items-center">
-       <span className="text-xl font-black">AEO</span>
-       <span className="text-[9px] font-black uppercase tracking-widest">Authorized Operator</span>
-    </div>
-  </div>
-</section>
+        <section className="mt-32 py-20 bg-[var(--color-accent)] dark:bg-[var(--color-secondary)]/10 text-[var(--color-primary)]">
+          <div className="max-w-4xl mx-auto text-center mb-16 px-6">
+            <h3 className="text-[10px] font-bold tracking-[0.5em] uppercase opacity-50 mb-4">Standard Operational Procedure</h3>
+            <h2 className="text-4xl font-black uppercase tracking-tighter">Your Supply Chain Timeline.</h2>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-8 px-10 relative">
+            <div className="absolute top-1/2 left-0 w-full h-[1px] bg-[var(--color-primary)]/10 hidden md:block"></div>
+            
+            {[
+              { step: "01", title: "Order Placement", desc: "Digital Bill of Lading generated" },
+              { step: "02", title: "Port Loading", desc: "Loading at Port of " + originCountry },
+              { step: "03", title: "Transit", desc: "Global vessel tracking enabled" },
+              { step: "04", title: "Arrival", desc: "Customs clearing & last-mile delivery" }
+            ].map((item, i) => (
+              <div key={i} className="relative z-10 flex flex-col items-center text-center">
+                <div className="w-12 h-12 bg-[var(--color-primary)] text-[var(--color-accent)] flex items-center justify-center font-black text-xl mb-6 shadow-xl">
+                  {item.step}
+                </div>
+                <h4 className="font-bold uppercase tracking-widest text-sm mb-2">{item.title}</h4>
+                <p className="text-[10px] opacity-60 uppercase tracking-tighter leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
 
         {/* --- RELATED TRADE ASSETS SECTION --- */}
         <div className="mt-40">

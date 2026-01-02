@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, NavLink } from 'react-router';
 import { FaFacebookF, FaTwitter, FaYoutube, FaLinkedinIn, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 
 const Footer = () => {
@@ -76,8 +76,8 @@ const Footer = () => {
             © {new Date().getFullYear()} IMPORT EXPORT HUB. ALL RIGHTS RESERVED.
           </p>
           <div className="flex gap-8 text-[9px] font-black uppercase tracking-[0.2em] opacity-40">
-            <a href="#" className="hover:text-[var(--color-secondary)]">Privacy Policy</a>
-            <a href="#" className="hover:text-[var(--color-secondary)]">Trade Terms</a>
+            <NavLink to={"/about"} className="hover:text-[var(--color-secondary)]">Privacy Policy</NavLink>
+            <NavLink to={"/about"} className="hover:text-[var(--color-secondary)]">Trade Terms</NavLink>
           </div>
         </div>
       </div>

@@ -12,6 +12,8 @@ import AddExport from '../Pages/AddExport';
 import MyExport from '../Pages/MyExport';
 import UpdateExport from '../Components/UpdateExport';
 import ErrorPage from '../Pages/ErrorPage';
+import About from '../Pages/About';
+import Contact from '../Pages/Contact';
 
 export const router = createBrowserRouter([
   {
@@ -32,7 +34,14 @@ export const router = createBrowserRouter([
           path:'/login' ,
          element:<Login></Login>
         },
-       
+        {
+          path:'/about' ,
+         element:<About/>
+        },
+        {
+          path:'/contact' ,
+         element:<Contact/>
+        },
         {
           path:'/allProducts' ,
           loader:()=> fetch('https://import-export-server.vercel.app/products'),
@@ -40,7 +49,7 @@ export const router = createBrowserRouter([
         },
         {
           path:'/productDetails/:id' ,
-         element:<PrivateRoute><ProductDetails></ProductDetails></PrivateRoute>
+         element:<ProductDetails></ProductDetails>
         },
         
         {

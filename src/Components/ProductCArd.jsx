@@ -16,9 +16,9 @@ const ProductCard = ({ products }) => {
     } = products;
 
     return (
-        <div className="group relative bg-[var(--color-primary)] border border-[var(--color-accent)]/10 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)] hover:border-[var(--color-secondary)]">
+        <div className="group rounded relative bg-[var(--color-primary)] border border-[var(--color-accent)]/10 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)] hover:border-[var(--color-secondary)]">
             {/* --- IMAGE SECTION --- */}
-            <div className="relative h-72 overflow-hidden bg-[var(--color-neutral)]/10">
+            <div className="relative  h-72 overflow-hidden bg-[var(--color-neutral)]/10">
                 <img
                     src={productImage}
                     alt={productName}
@@ -29,11 +29,12 @@ const ProductCard = ({ products }) => {
                 <div className="absolute inset-0 bg-[var(--color-secondary)]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                 {/* Top Action Badges */}
-                <div className="absolute top-4 left-4 flex gap-2">
+                <Link 
+                    to={`/productDetails/${_id}`} className="absolute top-4 left-4 flex gap-2">
                     <div className="bg-[var(--color-primary)]/90 backdrop-blur-md p-2 text-[var(--color-secondary)] hover:bg-[var(--color-secondary)] hover:text-[var(--color-primary)] transition-colors cursor-pointer shadow-sm">
                         <FiShoppingCart size={18} />
                     </div>
-                </div>
+                </Link>
 
                 <div className="absolute top-4 right-4">
                     <div className="bg-[var(--color-primary)]/90 backdrop-blur-md p-2 text-[var(--color-secondary)] hover:bg-[var(--color-accent)] hover:text-[var(--color-primary)] transition-colors cursor-pointer shadow-sm">
@@ -58,11 +59,11 @@ const ProductCard = ({ products }) => {
                 {/* Technical Specs Row */}
                 <div className="grid grid-cols-2 border-y border-[var(--color-accent)]/10 py-4 mb-6">
                     <div className="border-r border-[var(--color-accent)]/10 pr-4">
-                        <p className="text-[10px] text-[var(--color-accent)]/50 uppercase font-bold tracking-widest mb-1">Unit Price</p>
+                        {/* <p className="text-[10px] text-[var(--color-accent)]/50 uppercase font-bold tracking-widest mb-1">Unit Price</p> */}
                         <p className="text-xl font-mono font-bold text-[var(--color-secondary)]">${price}</p>
                     </div>
                     <div className="pl-4">
-                        <p className="text-[10px] text-[var(--color-accent)]/50 uppercase font-bold tracking-widest mb-1">Stock Level</p>
+                        {/* <p className="text-[10px] text-[var(--color-accent)]/50 uppercase font-bold tracking-widest mb-1">Stock Level</p> */}
                         <p className="text-sm font-bold text-[var(--color-accent)] flex items-center gap-2">
                             <FaBox className="text-[var(--color-secondary)] text-xs" /> {availableQuantity} Units
                         </p>

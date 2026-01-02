@@ -36,6 +36,8 @@ const Header = () => {
     <>
       <li><NavLink to="/" className={navItemStyles}>Home</NavLink></li>
       <li><NavLink to="/allProducts" className={navItemStyles}>Inventory</NavLink></li>
+      <li><NavLink to="/about" className={navItemStyles}>About us</NavLink></li>
+      <li><NavLink to="/contact" className={navItemStyles}>Contact us</NavLink></li>
       {user && ( // Only show these if user is logged in
         <>
           <li><NavLink to="/my-exports" className={navItemStyles}>My Exports</NavLink></li>
