@@ -41,7 +41,7 @@ Follow these steps to initialize the project environment on your local machine.
 
 ### 1. Clone the Repository
 ```bash
-git clone [https://github.com/your-username/import-export-hub.git](https://github.com/your-username/import-export-hub.git)
+git clone [https://github.com/roksanadilshad/import-export-hub-latest.git](https://github.com/your-username/import-export-hub.git)
 cd import-export-hub
 
 2.Install Dependencies
