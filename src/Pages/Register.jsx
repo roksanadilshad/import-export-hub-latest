@@ -11,14 +11,14 @@ const image_hosting_key = import.meta.env.VITE_IMGBB_API_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const Registration = () => {
-  const { createUser, setUser, signInWithGoogle, updateUserProfile } = useContext(AuthContext);
+  const { createUser, setUser, signInWithGoogle, updateUserProfile, setLoading } = useContext(AuthContext);
   const [showPass, setShowPass] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [preview, setPreview] = useState(null);
 
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || '/';
+  const from = location.state?.from?.pathname || '/dashboard/dashboardHome'; // Fixed default path
 
   const { register, handleSubmit, watch, formState: { errors }, reset } = useForm();
 
@@ -29,8 +29,6 @@ const Registration = () => {
       const file = photoFile[0];
       const objectUrl = URL.createObjectURL(file);
       setPreview(objectUrl);
-      
-      // Cleanup function to avoid memory leaks
       return () => URL.revokeObjectURL(objectUrl);
     }
   }, [photoFile]);
@@ -42,29 +40,48 @@ const Registration = () => {
     }
 
     setIsUploading(true);
-    const formData = new FormData();
-    formData.append('image', data.photo[0]);
+    setLoading(true); // Put AuthContext in loading state to prevent getIdToken errors in other components
 
     try {
+      // 1. Image Upload
+      const formData = new FormData();
+      formData.append('image', data.photo[0]);
       const res = await fetch(image_hosting_api, { method: 'POST', body: formData });
       const imgData = await res.json();
 
-      if (imgData.success) {
-        const photoURL = imgData.data.display_url;
-        
-        // Sequential Auth Logic
-        const result = await createUser(data.email, data.password);
-        await updateUserProfile(data.name, photoURL);
-        
-        // Use optional chaining for the result.user
-        setUser({ ...result?.user, displayName: data.name, photoURL: photoURL });
-        
-        toast.success("Personnel Record Created Successfully");
-        reset();
+      if (!imgData.success) throw new Error("Image Upload Failed");
+      const photoURL = imgData.data.display_url;
+
+      // 2. Account Creation
+      const result = await createUser(data.email, data.password);
+      
+      // 3. Update Profile (Name & Photo)
+      await updateUserProfile(data.name, photoURL);
+      
+      // 4. Force state update with all data included
+      // This prevents components from seeing a "partial" user object
+      const updatedUser = { 
+        ...result.user, 
+        displayName: data.name, 
+        photoURL: photoURL 
+      };
+      
+      setUser(updatedUser);
+      
+      // 5. Finalize
+      toast.success("Personnel Record Created Successfully");
+      reset();
+      
+      // Small timeout ensures all internal Firebase state changes settle 
+      // before the navigation closes the message channel
+      setTimeout(() => {
         navigate(from, { replace: true });
-      }
+        setLoading(false);
+      }, 500);
+
     } catch (err) {
       toast.error(err.message || "Registration Failed");
+      setLoading(false);
     } finally {
       setIsUploading(false);
     }
@@ -81,6 +98,7 @@ const Registration = () => {
 
   return (
     <div className="min-h-screen bg-[var(--color-primary)] flex items-center justify-center pt-24 pb-12 px-4">
+      {/* ... (UI layout remains the same as your previous code) ... */}
       <div className="w-full max-w-xl bg-[var(--color-primary)] border border-[var(--color-accent)]/10 p-8 lg:p-12 shadow-2xl relative">
         <div className="absolute top-0 right-0 w-24 h-1 bg-[var(--color-secondary)]"></div>
         
@@ -112,7 +130,7 @@ const Registration = () => {
                 <input 
                   {...register("photo", { required: "Portrait required" })}
                   type="file" 
-                  accept="image/*" // Ensure only images are selected
+                  accept="image/*"
                   className="hidden" 
                   id="photo-upload"
                 />

@@ -1,8 +1,16 @@
-import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
+import { 
+    createUserWithEmailAndPassword, 
+    GoogleAuthProvider, 
+    onAuthStateChanged, 
+    sendPasswordResetEmail, 
+    signInWithEmailAndPassword, 
+    signInWithPopup, 
+    signOut, 
+    updateProfile 
+} from "firebase/auth";
 import { useEffect, useState } from "react";
 import { auth } from "../firebase/firebase.init";
 import { AuthContext } from "./AuthContext";
-
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -10,41 +18,56 @@ const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-
-    const createUser = (email, password) =>{
+    const createUser = (email, password) => {
         setLoading(true);
         return createUserWithEmailAndPassword(auth, email, password);
     }
-    const signInUser = (email, password)=>{
+
+    const signInUser = (email, password) => {
         setLoading(true);
-        return signInWithEmailAndPassword(auth, email, password)
+        return signInWithEmailAndPassword(auth, email, password);
     }
-    const signInWithGoogle = () =>{
+
+    const signInWithGoogle = () => {
         setLoading(true);
         return signInWithPopup(auth, googleProvider);
     };
-    const signOutUser = () =>{
+
+    const signOutUser = () => {
+        setLoading(true); 
         return signOut(auth);
     }
-    const passwordReset =(email) =>{
-        setLoading(true)
-         return sendPasswordResetEmail(auth, email);
+
+    const passwordReset = (email) => {
+        setLoading(true);
+        return sendPasswordResetEmail(auth, email);
     };
-    const updateUserProfile = (name, photoURL) =>{
-        return updateProfile(user, {
-          displayName: name,
-          photoURL: photoURL,
-        })
+
+    
+    const updateUserProfile = (name, photoURL) => {
+        if (!auth.currentUser) return Promise.reject("No user found");
+        return updateProfile(auth.currentUser, {
+            displayName: name,
+            photoURL: photoURL,
+        });
     }
 
-    useEffect(()=>{
-            const unsubscribe = onAuthStateChanged(auth, (currentUser)=>{
-        setUser(currentUser);
-        setLoading(false);
-      });
-       return () =>{
-        unsubscribe();
-      } 
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+           
+            setUser(currentUser);
+
+            if (currentUser) {
+    
+                setLoading(false);
+            } else {
+                setLoading(false);
+            }
+        });
+
+        return () => {
+            unsubscribe();
+        } 
     }, [])
 
     const authInfo = {
@@ -59,6 +82,7 @@ const AuthProvider = ({children}) => {
         updateUserProfile,
         setLoading
     }
+
     return (
         <AuthContext.Provider value={authInfo}>
             {children}

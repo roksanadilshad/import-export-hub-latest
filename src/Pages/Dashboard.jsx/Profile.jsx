@@ -14,7 +14,7 @@ const Profile = () => {
             displayName: user?.displayName
         }
     });
-    console.log(user);
+    //console.log(user);
     
 
     // Handle Image Selection & Preview
