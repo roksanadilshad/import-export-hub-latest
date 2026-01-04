@@ -15,7 +15,7 @@ import 'aos/dist/aos.css';
 const Home = () => {
     const { loading } = use(AuthContext);
     const products = useLoaderData();
-    const latestProducts = products?.slice(0, 6) || [];
+    const latestProducts = products?.slice(0, 8) || [];
     const tickerText = "USD/EUR 0.92 ▲ • CN/USD 7.19 ▼ • OIL $78.40 ▲ • 2,400+ NEW CONTAINERS DEPARTED TODAY • VERIFIED PARTNERS: 12,402 • ";
     useEffect(() => {
         AOS.init({ duration: 800, once: false }); 
