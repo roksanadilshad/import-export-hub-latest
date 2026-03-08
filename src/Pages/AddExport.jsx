@@ -51,6 +51,8 @@ const AddExport = () => {
         createdAt: new Date(),
         exporterEmail: user?.email
       };
+console.log(user);
+console.log(typeof user.getIdToken);
 
       // Step C: Save to Backend
       const token = await user.getIdToken();

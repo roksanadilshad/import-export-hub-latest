@@ -13,13 +13,14 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 const Home = () => {
-    const { loading } = use(AuthContext);
+    const { loading, user } = use(AuthContext);
     const products = useLoaderData();
     const latestProducts = products?.slice(0, 8) || [];
     const tickerText = "USD/EUR 0.92 ▲ • CN/USD 7.19 ▼ • OIL $78.40 ▲ • 2,400+ NEW CONTAINERS DEPARTED TODAY • VERIFIED PARTNERS: 12,402 • ";
     useEffect(() => {
         AOS.init({ duration: 800, once: false }); 
     }, []);
+    
 
     return (
         <div className="overflow-x-hidden selection:bg-secondary selection:text-white">
@@ -316,11 +317,15 @@ const Home = () => {
                         <p className="text-gray-500 text-lg">Receive daily intelligence on trade routes, container pricing, and compliance updates.</p>
                     </div>
                     <div className="relative" data-aos="fade-left">
-                        <input type="email" placeholder="professional@company.com" className="w-full bg-transparent border-b-2 border-white/20 py-4 focus:border-accent outline-none text-2xl font-light transition-all" />
-                        <button className="absolute right-0 top-4 text-accent hover:text-white transition-colors">
-                            <IoIosArrowForward size={40} />
-                        </button>
-                    </div>
+  <input
+    type="email"
+    placeholder={user?.email || "Your email"}
+    className="w-full bg-transparent border-b-2 border-white/20 py-4 focus:border-accent outline-none text-2xl font-light transition-all"
+  />
+  <button className="absolute right-0 top-4 text-accent hover:text-white transition-colors">
+    <IoIosArrowForward size={40} />
+  </button>
+</div>
                 </div>
             </section>
         </div>

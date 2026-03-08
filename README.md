@@ -4,6 +4,10 @@
 
 ---
 
+## 🔗 Live Deployment
+Access the production terminal here:
+https://import-export-hub-latest-73qy.vercel.app/
+
 ## 🚀 Core Functionalities
 
 ### 📦 Dynamic Asset Management
@@ -68,10 +72,6 @@ GET,/api/products,Fetch all active trade assets
 POST,/api/add-export,Register a new export item
 PATCH,/api/update-stock,Modify inventory quantities
 DELETE,/api/product/:id,Remove asset from terminal
-
-🔗 Live Deployment
-Access the production terminal here:
-https://import-export-hub-latest-73qy.vercel.app/
 
 🛡️ License
 Distributed under the MIT License.

@@ -3,29 +3,39 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGri
 
 const DashboardHome = () => {
     const [chartData, setChartData] = useState([]);
+    
+    // Derived stats calculated from chartData
+    const totalExports = chartData.reduce((acc, item) => acc + (item.count || 0), 0);
+    const globalReach = chartData.length; // Number of unique categories/sectors
+    const systemTrust = "99.9%"; // This remains a constant for now
 
     useEffect(() => {
-        // Fetch real count per category from your backend
         fetch('https://import-export-server.vercel.app/category-stats')
             .then(res => res.json())
-            .then(data => setChartData(data))
+            .then(data => {
+                // Ensure data is an array before setting
+                if (Array.isArray(data)) {
+                    setChartData(data);
+                }
+            })
             .catch(err => console.error("Chart fetch error:", err));
     }, []);
+
+    const statCards = [
+        { label: "Total Exports", val: totalExports.toLocaleString() },
+        { label: "Global Reach", val: `${globalReach} Sectors` },
+        { label: "System Trust", val: systemTrust }
+    ];
 
     return (
         <div className="space-y-10">
             {/* STAT CARDS */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {[
-                    { label: "Total Exports", val: "1.2k" },
-                    { label: "Global Reach", val: "42 Countries" },
-                    { label: "System Trust", val: "99.9%" }
-                ].map((s, i) => (
+                {statCards.map((s, i) => (
                     <div 
                         key={i} 
                         className="p-8 border border-[var(--color-accent)]/10 bg-[var(--color-accent)]/5 backdrop-blur-sm relative overflow-hidden group transition-all hover:border-[var(--color-secondary)]/30"
                     >
-                        {/* Interactive Accent Line */}
                         <div className="absolute top-0 right-0 w-1 h-full bg-[var(--color-secondary)] opacity-0 group-hover:opacity-100 transition-all"></div>
                         
                         <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] opacity-60 mb-2">
@@ -52,12 +62,7 @@ const DashboardHome = () => {
 
                 <ResponsiveContainer width="100%" height="85%">
                     <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                        <CartesianGrid 
-                            strokeDasharray="3 3" 
-                            stroke="var(--color-accent)" 
-                            vertical={false} 
-                            opacity={0.1} 
-                        />
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--color-accent)" vertical={false} opacity={0.1} />
                         <XAxis 
                             dataKey="category" 
                             stroke="var(--color-accent)" 
@@ -67,13 +72,7 @@ const DashboardHome = () => {
                             dy={10}
                             style={{ fontWeight: '900', textTransform: 'uppercase', opacity: 0.5 }}
                         />
-                        <YAxis 
-                            stroke="var(--color-accent)" 
-                            fontSize={10} 
-                            tickLine={false} 
-                            axisLine={false} 
-                            opacity={0.5}
-                        />
+                        <YAxis stroke="var(--color-accent)" fontSize={10} tickLine={false} axisLine={false} opacity={0.5} />
                         <Tooltip 
                             cursor={{ fill: 'var(--color-secondary)', opacity: 0.05 }} 
                             contentStyle={{ 
@@ -86,12 +85,7 @@ const DashboardHome = () => {
                             }} 
                             itemStyle={{ color: 'var(--color-secondary)' }}
                         />
-                        <Bar 
-                            dataKey="count" 
-                            fill="var(--color-secondary)" 
-                            barSize={30} 
-                            radius={[2, 2, 0, 0]}
-                        />
+                        <Bar dataKey="count" fill="var(--color-secondary)" barSize={30} radius={[2, 2, 0, 0]} />
                     </BarChart>
                 </ResponsiveContainer>
             </div>

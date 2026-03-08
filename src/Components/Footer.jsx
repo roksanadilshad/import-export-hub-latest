@@ -53,7 +53,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3">
                 <FaEnvelope className="text-[var(--color-secondary)]" /> 
-                ops@iehub.global
+                roksanadilshad@gmail.com
               </li>
               <li><a href="#" className="hover:text-[var(--color-secondary)]">24/7 Support Line</a></li>
             </ul>
